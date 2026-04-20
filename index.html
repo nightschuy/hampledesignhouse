@@ -3,268 +3,392 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hample Design House | Structural Blueprints</title>
-    
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Hample Design House — Digital Strategy & AI Solutions</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Syne:wght@400;500;600;700;800&family=Epilogue:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Three.js Library for 3D Geometry -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
-        /* --- CSS VARIABLES --- */
         :root {
-            --bg-outer: #1e2633; 
-            --bg-inner: #0f1626; 
-            --bg-pill: #1e2a3b;  
-            --accent-blue: #3b82f6; 
-            --accent-glow: rgba(59, 130, 246, 0.3);
-            --text-light: #f8fafc;
-            --text-dim: #94a3b8;
-            --font-head: 'Syncopate', sans-serif;
-            --font-body: 'Inter', sans-serif;
-            --radius-lg: 24px;
-            --radius-pill: 50px;
+            --bg-deep:    #080d14;
+            --bg-mid:     #0c1320;
+            --bg-card:    #111b2e;
+            --bg-pill:    #162035;
+            --blue:       #3b82f6;
+            --blue-dim:   rgba(59,130,246,0.18);
+            --blue-glow:  rgba(59,130,246,0.35);
+            --cyan:       #22d3ee;
+            --text-hi:    #f0f6ff;
+            --text-mid:   #94a3b8;
+            --text-lo:    #4a6080;
+            --font-head:  'Syncopate', sans-serif;
+            --font-ui:    'Syne', sans-serif;
+            --font-body:  'Epilogue', sans-serif;
+            --r-card:     20px;
+            --r-pill:     100px;
+            --nav-h:      72px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        html { scroll-behavior: smooth; }
 
         body {
-            background: radial-gradient(circle at center, #2b394d 0%, #111824 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background-color: var(--bg-deep);
+            color: var(--text-hi);
             font-family: var(--font-body);
-            color: var(--text-light);
-            padding: 2rem;
             overflow-x: hidden;
         }
 
-        /* --- MAIN CONTAINER --- */
-        .app-container {
-            background-color: var(--bg-inner);
-            width: 100%;
-            max-width: 1400px;
-            height: 85vh;
-            min-height: 700px;
-            border-radius: var(--radius-lg);
-            display: grid;
-            grid-template-columns: 1fr 1.2fr 1fr;
-            padding: 2rem;
-            gap: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        /* ─── SCROLLBAR ─── */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 4px; }
+
+        /* ─── GRAIN OVERLAY ─── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            pointer-events: none;
+            z-index: 9999;
         }
 
-        /* --- LEFT COLUMN --- */
-        .col-left {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            z-index: 10;
-        }
-
-        /* Top Nav Pills */
-        .nav-pills {
-            background-color: var(--bg-pill);
-            display: inline-flex;
-            border-radius: var(--radius-pill);
-            padding: 0.3rem;
-            align-self: flex-start;
-        }
-
-        .nav-pills a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 0.75rem;
-            font-weight: 500;
-            padding: 0.6rem 1.2rem;
-            border-radius: var(--radius-pill);
-            transition: 0.3s;
-        }
-
-        .nav-pills a.active {
-            background-color: var(--accent-blue);
-        }
-
-        .nav-pills a:hover:not(.active) {
-            background-color: rgba(255,255,255,0.1);
-        }
-
-        /* Typography Block */
-        .brand-block {
-            margin-top: -2rem; 
-        }
-
-        .brand-sub {
-            font-family: var(--font-head);
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            margin-bottom: 0.5rem;
-            display: block;
-            color: var(--accent-blue);
-        }
-
-        .brand-title {
-            font-family: var(--font-head);
-            font-size: clamp(2rem, 3.5vw, 3rem);
-            font-weight: 700;
-            line-height: 1.2;
-            letter-spacing: -1px;
-        }
-
-        .brand-title span.block {
-            display: block;
-            font-size: clamp(1.2rem, 2.5vw, 2rem);
-            letter-spacing: 4px;
-            color: var(--text-dim);
-        }
-
-        /* Bottom Text Block */
-        .info-block {
-            max-width: 85%;
-        }
-
-        .info-title {
-            font-family: var(--font-head);
-            font-size: 0.8rem;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .info-desc {
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            line-height: 1.6;
-        }
-
-        /* --- CENTER COLUMN (3D CANVAS CONTAINER) --- */
-        .col-center {
-            height: 100%;
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            position: relative;
-            background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
-            border: 1px solid rgba(59, 130, 246, 0.1);
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+        /* ─── NAV ─── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: var(--nav-h);
+            z-index: 1000;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            padding: 0 3rem;
+            background: rgba(8,13,20,0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .nav-logo {
+            font-family: var(--font-head);
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--text-hi);
+            text-decoration: none;
+        }
+
+        .nav-logo span { color: var(--blue); }
+
+        .nav-links {
+            display: flex;
+            gap: 0.3rem;
+            background: var(--bg-pill);
+            border-radius: var(--r-pill);
+            padding: 0.3rem;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .nav-links a {
+            color: var(--text-mid);
+            text-decoration: none;
+            font-family: var(--font-ui);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.55rem 1.2rem;
+            border-radius: var(--r-pill);
+            transition: all 0.25s;
+        }
+
+        .nav-links a:hover { color: var(--text-hi); background: rgba(255,255,255,0.06); }
+        .nav-links a.active { background: var(--blue); color: #fff; }
+
+        .nav-cta {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background: var(--blue);
+            color: #fff;
+            text-decoration: none;
+            font-family: var(--font-ui);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.65rem 1.4rem;
+            border-radius: var(--r-pill);
+            transition: all 0.25s;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary:hover {
+            background: #5b9fff;
+            box-shadow: 0 0 24px var(--blue-glow);
+            transform: translateY(-1px);
+        }
+
+        .btn-ghost {
+            color: var(--text-mid);
+            text-decoration: none;
+            font-family: var(--font-ui);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.65rem 1.2rem;
+            border-radius: var(--r-pill);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.25s;
+        }
+
+        .btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
+
+        /* ─── SECTION COMMONS ─── */
+        section { position: relative; }
+
+        .section-label {
+            font-family: var(--font-head);
+            font-size: 0.6rem;
+            letter-spacing: 4px;
+            color: var(--blue);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        /* ─── HERO ─── */
+        #hero {
+            height: 100vh;
+            min-height: 700px;
+            display: grid;
+            grid-template-columns: 1fr 1.3fr 1fr;
+            align-items: center;
+            padding: calc(var(--nav-h) + 2rem) 3rem 2rem;
+            gap: 2rem;
+        }
+
+        /* ambient glow behind canvas */
+        #hero::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        .brand-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--blue-dim);
+            border: 1px solid rgba(59,130,246,0.3);
+            border-radius: var(--r-pill);
+            padding: 0.4rem 1rem;
+            font-family: var(--font-ui);
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--blue);
+            width: fit-content;
+        }
+
+        .brand-eyebrow::before {
+            content: '';
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--blue);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%,100% { opacity:1; transform: scale(1); }
+            50% { opacity:0.4; transform: scale(0.7); }
+        }
+
+        .hero-title {
+            font-family: var(--font-head);
+            font-size: clamp(1.8rem, 3vw, 2.8rem);
+            font-weight: 700;
+            line-height: 1.25;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-title .dim { color: var(--text-lo); }
+        .hero-title .accent { color: var(--blue); }
+
+        .hero-desc {
+            font-size: 0.88rem;
+            color: var(--text-mid);
+            line-height: 1.75;
+            max-width: 32ch;
+            font-weight: 300;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .stat-item {}
+        .stat-num {
+            font-family: var(--font-ui);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-hi);
+            line-height: 1;
+        }
+        .stat-num sup { font-size: 0.8rem; color: var(--blue); }
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-lo);
+            margin-top: 0.2rem;
+            font-family: var(--font-ui);
+        }
+
+        /* ─── 3D Canvas ─── */
+        .hero-canvas-wrap {
+            height: 100%;
+            min-height: 500px;
+            border-radius: 28px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(160deg, rgba(59,130,246,0.06) 0%, rgba(8,13,20,0) 60%);
+            border: 1px solid rgba(59,130,246,0.12);
+            cursor: move;
+        }
+
+        .canvas-label {
+            position: absolute;
+            bottom: 1.2rem; left: 1.4rem;
+            font-family: var(--font-ui);
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-lo);
+            letter-spacing: 1px;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .canvas-label::before {
+            content: '';
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: var(--blue);
         }
 
         #canvas-container {
             width: 100%;
             height: 100%;
             position: absolute;
-            top: 0;
-            left: 0;
-            cursor: move; /* Indicates it can be interacted with */
+            inset: 0;
         }
 
-        /* --- RIGHT COLUMN --- */
-        .col-right {
+        /* ─── HERO RIGHT ─── */
+        .hero-right {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            height: 100%;
+            padding: 1rem 0;
             align-items: flex-end;
-            z-index: 10;
         }
 
-        /* Top Action Bar */
-        .action-bar {
+        .service-pills {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            align-items: flex-end;
+        }
+
+        .service-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: var(--r-pill);
+            padding: 0.6rem 1rem 0.6rem 0.8rem;
+            text-decoration: none;
+            color: var(--text-mid);
+            font-family: var(--font-ui);
+            font-size: 0.73rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .service-pill:hover {
+            border-color: var(--blue);
+            color: var(--text-hi);
+            background: var(--blue-dim);
+            transform: translateX(-4px);
+        }
+
+        .pill-icon {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: var(--blue-dim);
+            color: var(--blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            flex-shrink: 0;
+        }
+
+        /* mini action cards bottom-right */
+        .mini-cards {
             display: flex;
             gap: 0.8rem;
         }
 
-        .btn-contact {
-            background-color: transparent;
-            border: 1px solid var(--accent-blue);
-            color: var(--accent-blue);
-            text-decoration: none;
-            font-family: var(--font-head);
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 0.8rem 1.5rem;
-            border-radius: var(--radius-pill);
-            display: flex;
-            align-items: center;
-            text-transform: uppercase;
-            transition: all 0.3s;
-        }
-
-        .btn-contact:hover {
-            background-color: var(--accent-blue);
-            color: white;
-            box-shadow: 0 0 15px var(--accent-glow);
-        }
-
-        .btn-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--bg-pill);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-        }
-
-        .btn-icon:hover {
-            border-color: var(--accent-blue);
-            color: var(--accent-blue);
-        }
-
-        /* Mini Cards with CSS Geometries */
-        .cards-container {
-            display: flex;
-            gap: 1rem;
-            margin-top: -2rem; 
-        }
-
         .mini-card {
-            width: 140px;
-            height: 140px;
-            border-radius: 20px;
-            background-color: var(--bg-pill);
+            width: 130px;
+            height: 130px;
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 18px;
+            padding: 1rem;
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            padding: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            perspective: 600px;
+            justify-content: flex-end;
+            transition: border-color 0.3s, transform 0.3s;
         }
 
-        /* Mini Gyroscope */
-        .wireframe-gyro {
+        .mini-card:hover {
+            border-color: rgba(59,130,246,0.3);
+            transform: translateY(-3px);
+        }
+
+        .mini-card-geo {
             position: absolute;
-            top: 20%;
-            left: 25%;
-            width: 70px;
-            height: 70px;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -60%);
+        }
+
+        /* wireframe gyro CSS */
+        .wireframe-gyro {
+            width: 55px; height: 55px;
             transform-style: preserve-3d;
             animation: spin-gyro 8s infinite linear;
         }
 
         .gyro-ring {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             border-radius: 50%;
-            border: 1px solid var(--text-light);
-            opacity: 0.6;
+            border: 1px solid rgba(240,246,255,0.5);
         }
 
         .gyro-ring:nth-child(1) { transform: rotateX(0deg); }
@@ -272,421 +396,1080 @@
         .gyro-ring:nth-child(3) { transform: rotateX(120deg) rotateY(90deg); }
 
         @keyframes spin-gyro {
-            0% { transform: rotateY(0deg) rotateZ(0deg); }
-            100% { transform: rotateY(360deg) rotateZ(360deg); }
+            to { transform: rotateY(360deg) rotateZ(360deg); }
         }
 
-        /* Nested Cubes */
         .nested-cubes {
-            position: absolute;
-            top: 25%;
-            left: 25%;
-            width: 60px;
-            height: 60px;
+            width: 50px; height: 50px;
             transform-style: preserve-3d;
             animation: spin-nested 12s infinite linear alternate;
         }
 
         .nested-box {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 1px solid var(--text-dim);
+            inset: 0;
+            border: 1px solid var(--text-mid);
             transform-style: preserve-3d;
         }
 
         .inner-box {
             position: absolute;
-            top: 20%;
-            left: 20%;
-            width: 60%;
-            height: 60%;
-            border: 1px solid var(--accent-blue);
+            inset: 20%;
+            border: 1px solid var(--blue);
             animation: spin-inner 6s infinite linear;
         }
 
-        @keyframes spin-nested {
-            0% { transform: rotateX(45deg) rotateY(0deg); }
-            100% { transform: rotateX(45deg) rotateY(360deg); }
-        }
+        @keyframes spin-nested { to { transform: rotateX(45deg) rotateY(360deg); } }
+        @keyframes spin-inner  { to { transform: rotateZ(360deg) rotateY(-360deg); } }
 
-        @keyframes spin-inner {
-            0% { transform: rotateZ(0deg) rotateY(0deg); }
-            100% { transform: rotateZ(360deg) rotateY(-360deg); }
-        }
-
-        .card-content {
+        .mini-card-label {
+            font-family: var(--font-ui);
+            font-size: 0.62rem;
+            font-weight: 600;
+            color: var(--text-mid);
+            line-height: 1.3;
             position: relative;
-            z-index: 3;
+            z-index: 2;
+        }
+
+        /* ─── SERVICES ─── */
+        #services {
+            padding: 8rem 3rem;
+            background: var(--bg-mid);
+        }
+
+        .services-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            height: 100%;
+            margin-bottom: 4rem;
         }
 
-        .card-text {
-            font-size: 0.65rem;
-            font-weight: 500;
-            max-width: 70%;
-            line-height: 1.3;
+        .services-title {
+            font-family: var(--font-head);
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
         }
 
-        .card-btn {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
+        .services-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-mid);
+            max-width: 36ch;
+            text-align: right;
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .service-card {
+            background: var(--bg-mid);
+            padding: 2.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            transition: background 0.3s;
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--blue), var(--cyan));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .service-card:hover::before { transform: scaleX(1); }
+        .service-card:hover { background: var(--bg-card); }
+
+        .service-num {
+            font-family: var(--font-head);
+            font-size: 0.55rem;
+            letter-spacing: 3px;
+            color: var(--text-lo);
+        }
+
+        .service-icon {
+            width: 48px; height: 48px;
+            border-radius: 14px;
+            background: var(--blue-dim);
+            border: 1px solid rgba(59,130,246,0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.6rem;
-            text-decoration: none;
-            flex-shrink: 0;
-            transition: all 0.3s;
+            color: var(--blue);
+            font-size: 1.1rem;
+            transition: transform 0.3s, background 0.3s;
         }
 
-        .mini-card:hover .card-btn {
-            background-color: var(--accent-blue);
-            transform: scale(1.1) rotate(45deg);
+        .service-card:hover .service-icon {
+            transform: scale(1.1) rotate(-5deg);
+            background: rgba(59,130,246,0.25);
         }
 
-        /* Social Icons */
-        .social-links {
+        .service-name {
+            font-family: var(--font-ui);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-hi);
+        }
+
+        .service-desc {
+            font-size: 0.8rem;
+            color: var(--text-mid);
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .service-tags {
             display: flex;
-            gap: 1.5rem;
-            padding-bottom: 0.5rem;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: auto;
         }
 
-        .social-links a {
-            color: var(--text-dim);
-            font-size: 1rem;
-            transition: color 0.3s;
+        .tag {
+            font-family: var(--font-ui);
+            font-size: 0.62rem;
+            font-weight: 600;
+            color: var(--text-lo);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 100px;
+            padding: 0.25rem 0.7rem;
         }
 
-        .social-links a:hover {
-            color: var(--text-light);
+        /* ─── PORTFOLIO ─── */
+        #portfolio {
+            padding: 8rem 3rem;
         }
 
-        /* --- COMING SOON OVERLAY --- */
-        #coming-soon-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #2b394d 0%, #111824 100%);
-            z-index: 9999;
+        .portfolio-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 3rem;
+        }
+
+        .portfolio-title {
+            font-family: var(--font-head);
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .portfolio-filters {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .filter-btn {
+            font-family: var(--font-ui);
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-mid);
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: var(--r-pill);
+            padding: 0.5rem 1.1rem;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--blue);
+            border-color: var(--blue);
+            color: #fff;
+        }
+
+        /* Masonry-style gallery */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-auto-rows: 80px;
+            gap: 1rem;
+        }
+
+        .portfolio-item {
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.04);
+            cursor: pointer;
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        .portfolio-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            z-index: 2;
+        }
+
+        /* Layout positions */
+        .pi-1  { grid-column: 1/6;  grid-row: 1/5; }   /* large landscape */
+        .pi-2  { grid-column: 6/9;  grid-row: 1/4; }   /* portrait */
+        .pi-3  { grid-column: 9/13; grid-row: 1/3; }   /* landscape */
+        .pi-4  { grid-column: 9/13; grid-row: 3/5; }   /* landscape */
+        .pi-5  { grid-column: 6/9;  grid-row: 4/7; }   /* square-ish */
+        .pi-6  { grid-column: 1/5;  grid-row: 5/7; }   /* wide */
+        .pi-7  { grid-column: 5/7;  grid-row: 5/7; }   /* small */
+        .pi-8  { grid-column: 9/13; grid-row: 5/7; }   /* wide */
+
+        .portfolio-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: saturate(0.85);
+            transition: filter 0.35s, transform 0.5s;
+        }
+
+        .portfolio-item:hover img {
+            filter: saturate(1.1);
+            transform: scale(1.05);
+        }
+
+        /* overlay on hover */
+        .portfolio-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, rgba(8,13,20,0.85) 0%, transparent 55%);
+            opacity: 0;
+            transition: opacity 0.3s;
             display: flex;
             flex-direction: column;
+            justify-content: flex-end;
+            padding: 1.2rem;
+        }
+
+        .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+
+        .overlay-cat {
+            font-family: var(--font-ui);
+            font-size: 0.62rem;
+            font-weight: 700;
+            color: var(--blue);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+        }
+
+        .overlay-title {
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-hi);
+        }
+
+        /* placeholder state when no image */
+        .portfolio-placeholder {
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: var(--text-lo);
+            font-family: var(--font-ui);
+            font-size: 0.7rem;
+            text-align: center;
+            padding: 1rem;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.01) 10px,
+                rgba(255,255,255,0.01) 20px
+            );
+        }
+
+        .portfolio-placeholder i {
+            font-size: 1.4rem;
+            opacity: 0.3;
+        }
+
+        /* ─── PROCESS STRIP ─── */
+        #process {
+            padding: 6rem 3rem;
+            background: var(--bg-mid);
+        }
+
+        .process-inner {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 6rem;
+            align-items: start;
+        }
+
+        .process-intro-title {
+            font-family: var(--font-head);
+            font-size: clamp(1.4rem, 2.5vw, 2rem);
+            line-height: 1.3;
+            font-weight: 700;
+        }
+
+        .process-intro-desc {
+            font-size: 0.82rem;
+            color: var(--text-mid);
+            line-height: 1.8;
+            margin-top: 1rem;
+            font-weight: 300;
+        }
+
+        .process-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .process-step {
+            display: grid;
+            grid-template-columns: 2rem 1fr;
+            gap: 1.5rem;
+            padding: 1.8rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            align-items: start;
+            transition: all 0.2s;
+        }
+
+        .process-step:last-child { border-bottom: none; }
+
+        .step-num {
+            font-family: var(--font-head);
+            font-size: 0.55rem;
+            letter-spacing: 2px;
+            color: var(--blue);
+            padding-top: 0.3rem;
+        }
+
+        .step-content {}
+        .step-name {
+            font-family: var(--font-ui);
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .step-desc {
+            font-size: 0.78rem;
+            color: var(--text-mid);
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        /* ─── CTA ─── */
+        #cta {
+            padding: 8rem 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #cta::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px; height: 400px;
+            background: radial-gradient(ellipse, rgba(59,130,246,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta-label { margin-bottom: 1.5rem; }
+
+        .cta-title {
+            font-family: var(--font-head);
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-title .line2 {
+            display: block;
+            color: var(--blue);
+        }
+
+        .cta-desc {
+            font-size: 0.9rem;
+            color: var(--text-mid);
+            max-width: 44ch;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .cta-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-large {
+            font-family: var(--font-ui);
+            font-size: 0.82rem;
+            font-weight: 700;
+            padding: 0.9rem 2.2rem;
+            border-radius: var(--r-pill);
+            text-decoration: none;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-large.primary {
+            background: var(--blue);
+            color: #fff;
+        }
+
+        .btn-large.primary:hover {
+            background: #5b9fff;
+            box-shadow: 0 0 40px var(--blue-glow);
+            transform: translateY(-2px);
+        }
+
+        .btn-large.outline {
+            background: transparent;
+            color: var(--text-mid);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn-large.outline:hover {
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            padding: 2.5rem 3rem;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-family: var(--font-head);
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            color: var(--text-lo);
+            text-decoration: none;
+        }
+
+        .footer-copy {
+            font-size: 0.72rem;
+            color: var(--text-lo);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1.2rem;
+        }
+
+        .footer-social a {
+            color: var(--text-lo);
+            font-size: 0.85rem;
+            transition: color 0.2s;
+            text-decoration: none;
+        }
+
+        .footer-social a:hover { color: var(--text-hi); }
+
+        /* ─── LIGHTBOX ─── */
+        #lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(8,13,20,0.95);
+            z-index: 2000;
+            display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.3s;
+            backdrop-filter: blur(10px);
         }
 
-        #coming-soon-overlay.visible {
+        #lightbox.open {
             opacity: 1;
             pointer-events: auto;
         }
 
-        .cs-content {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        #lightbox img {
+            max-width: 85vw;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
         }
 
-        .cs-title {
-            font-family: var(--font-head);
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            letter-spacing: 2px;
-        }
-
-        .cs-desc {
-            color: var(--text-dim);
-            margin-bottom: 2rem;
-            font-size: 0.9rem;
-        }
-
-        #cs-canvas-container {
-            width: 300px;
-            height: 300px;
-            cursor: move;
-        }
-
-        .btn-close-cs {
+        .lb-close {
             position: absolute;
-            top: 2rem;
-            right: 2rem;
-            background-color: transparent;
-            border: 1px solid var(--accent-blue);
-            color: var(--accent-blue);
-            font-family: var(--font-head);
-            padding: 0.8rem 1.5rem;
-            border-radius: var(--radius-pill);
+            top: 2rem; right: 2rem;
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: var(--text-mid);
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            font-size: 0.7rem;
-            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
         }
 
-        .btn-close-cs:hover {
-            background-color: var(--accent-blue);
-            color: white;
-            box-shadow: 0 0 15px var(--accent-glow);
+        .lb-close:hover { border-color: var(--blue); color: var(--blue); }
+
+        /* ─── FADE-IN ANIMATION ─── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
         }
 
-        /* --- RESPONSIVE DESIGN --- */
-        @media (max-width: 1024px) {
-            .app-container {
-                grid-template-columns: 1fr 1fr;
-                height: auto;
-            }
-            .col-center {
-                grid-column: 1 / -1;
-                order: -1; 
-                height: 400px;
-            }
-            .col-left, .col-right {
-                gap: 2rem;
-            }
-            .brand-block, .cards-container {
-                margin-top: 0;
-            }
-            .col-right {
-                align-items: flex-start;
-            }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        @media (max-width: 650px) {
-            body { padding: 1rem; }
-            .app-container {
-                grid-template-columns: 1fr;
-                padding: 1.5rem;
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 1100px) {
+            #hero { grid-template-columns: 1fr 1fr; padding: 7rem 2rem 2rem; }
+            .hero-right { display: none; }
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .portfolio-grid {
+                grid-template-columns: repeat(6, 1fr);
             }
-            .col-center {
-                height: 350px;
-            }
-            .cards-container {
-                width: 100%;
-                justify-content: space-between;
-            }
-            .mini-card {
-                width: 48%;
-            }
-            .action-bar {
-                width: 100%;
-                justify-content: space-between;
-            }
+            .pi-1 { grid-column:1/5; grid-row:1/4; }
+            .pi-2 { grid-column:5/7; grid-row:1/3; }
+            .pi-3 { grid-column:5/7; grid-row:3/5; }
+            .pi-4 { grid-column:1/4; grid-row:4/6; }
+            .pi-5 { grid-column:4/7; grid-row:5/7; }
+            .pi-6 { grid-column:1/4; grid-row:6/8; }
+            .pi-7 { grid-column:4/7; grid-row:7/9; }
+            .pi-8 { grid-column:1/7; grid-row:9/11; }
+            .process-inner { grid-template-columns: 1fr; gap: 3rem; }
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 0 1.5rem; }
+            .nav-links { display: none; }
+            #hero { grid-template-columns: 1fr; height: auto; padding: 6rem 1.5rem 2rem; }
+            .hero-canvas-wrap { min-height: 350px; }
+            #services, #portfolio, #process, #cta { padding: 5rem 1.5rem; }
+            .services-header, .portfolio-header { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+            .services-title, .portfolio-title { font-size: 1.5rem; }
+            .services-subtitle { text-align: left; }
+            .services-grid { grid-template-columns: 1fr; }
+            .portfolio-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 140px; }
+            .pi-1,.pi-2,.pi-3,.pi-4,.pi-5,.pi-6,.pi-7,.pi-8 { grid-column: auto; grid-row: auto; }
+            footer { flex-direction: column; gap: 1.5rem; text-align: center; }
         }
     </style>
 </head>
 <body>
 
-    <main class="app-container">
-        
-        <!-- LEFT COLUMN -->
-        <div class="col-left">
-            <nav class="nav-pills">
-                <a href="#" class="active cs-trigger">Studio</a>
-                <a href="#" class="cs-trigger">Projects</a>
-                <a href="#" class="cs-trigger">Vision</a>
-                <a href="mailto:schuyler@hampledesignhouse.com">Contact</a>
-            </nav>
+    <!-- NAV -->
+    <nav>
+        <a href="#hero" class="nav-logo">HAMPLE<span>.</span></a>
+        <div class="nav-links">
+            <a href="#hero" class="active">Studio</a>
+            <a href="#services">Services</a>
+            <a href="#portfolio">Work</a>
+            <a href="#process">Process</a>
+        </div>
+        <div class="nav-cta">
+            <a href="#cta" class="btn-ghost">Our Approach</a>
+            <a href="mailto:schuyler@hampledesignhouse.com" class="btn-primary">Start a Project</a>
+        </div>
+    </nav>
 
-            <div class="brand-block">
-                <span class="brand-sub">EST. 2025</span>
-                <h1 class="brand-title">
-                    HAMPLE
-                    <span class="block">DESIGN HOUSE</span>
-                </h1>
+    <!-- ─── HERO ─── -->
+    <section id="hero">
+
+        <div class="hero-left reveal">
+            <div class="brand-eyebrow">Available for New Projects — EST. 2025</div>
+
+            <h1 class="hero-title">
+                HAMPLE<br>
+                <span class="dim">DESIGN</span><br>
+                <span class="accent">HOUSE</span>
+            </h1>
+
+            <p class="hero-desc">
+                We design bold digital products — spanning brand identity, web experiences, product marketing, and AI-powered solutions that actually move the needle.
+            </p>
+
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-num">4<sup>+</sup></div>
+                    <div class="stat-label">Core Disciplines</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">∞</div>
+                    <div class="stat-label">Creative Ceiling</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">1<sup>st</sup></div>
+                    <div class="stat-label">Impression Guaranteed</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-canvas-wrap">
+            <div id="canvas-container"></div>
+            <div class="canvas-label">Interactive — Drag to Rotate</div>
+        </div>
+
+        <div class="hero-right reveal">
+            <div class="service-pills">
+                <a href="#services" class="service-pill">
+                    <div class="pill-icon"><i class="fa-solid fa-globe"></i></div>
+                    Web Design & Dev
+                </a>
+                <a href="#services" class="service-pill">
+                    <div class="pill-icon"><i class="fa-solid fa-pen-nib"></i></div>
+                    Graphic & Brand Design
+                </a>
+                <a href="#services" class="service-pill">
+                    <div class="pill-icon"><i class="fa-solid fa-chart-line"></i></div>
+                    Product Marketing
+                </a>
+                <a href="#services" class="service-pill">
+                    <div class="pill-icon"><i class="fa-solid fa-microchip"></i></div>
+                    AI-Powered Solutions
+                </a>
             </div>
 
-            <div class="info-block">
-                <h3 class="info-title">Pioneering Digital Design</h3>
-                <p class="info-desc">
-                    Hample Design House crafts visionary digital products. We are a creative and reliable partner dedicated to engineering robust, seamless experiences.
+            <div class="mini-cards">
+                <div class="mini-card">
+                    <div class="mini-card-geo">
+                        <div class="wireframe-gyro">
+                            <div class="gyro-ring"></div>
+                            <div class="gyro-ring"></div>
+                            <div class="gyro-ring"></div>
+                        </div>
+                    </div>
+                    <div class="mini-card-label">Structural Integrity</div>
+                </div>
+                <div class="mini-card">
+                    <div class="mini-card-geo">
+                        <div class="nested-cubes">
+                            <div class="nested-box"></div>
+                            <div class="inner-box"></div>
+                        </div>
+                    </div>
+                    <div class="mini-card-label">Digital Blueprints</div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ─── SERVICES ─── -->
+    <section id="services">
+        <div class="services-header reveal">
+            <div>
+                <div class="section-label">What We Do</div>
+                <h2 class="services-title">Full-Spectrum<br>Digital Craft</h2>
+            </div>
+            <p class="services-subtitle">
+                From pixel-perfect interfaces to AI-native workflows — we build the things your brand needs to compete in a world that moves fast.
+            </p>
+        </div>
+
+        <div class="services-grid reveal">
+
+            <div class="service-card">
+                <div class="service-num">01</div>
+                <div class="service-icon"><i class="fa-solid fa-globe"></i></div>
+                <div class="service-name">Web Design &amp; Development</div>
+                <p class="service-desc">
+                    High-performance websites and web apps built for conversion. We architect digital experiences that feel alive — optimized for speed, accessibility, and visual impact from the first scroll.
+                </p>
+                <div class="service-tags">
+                    <span class="tag">Landing Pages</span>
+                    <span class="tag">Web Apps</span>
+                    <span class="tag">CMS Builds</span>
+                    <span class="tag">Interaction Design</span>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-num">02</div>
+                <div class="service-icon"><i class="fa-solid fa-pen-nib"></i></div>
+                <div class="service-name">Graphic &amp; Brand Design</div>
+                <p class="service-desc">
+                    Identities built to endure. We create cohesive brand systems — logo suites, typography stacks, color languages, and asset libraries — that translate seamlessly across every touchpoint.
+                </p>
+                <div class="service-tags">
+                    <span class="tag">Brand Identity</span>
+                    <span class="tag">Logo Systems</span>
+                    <span class="tag">Print & Digital</span>
+                    <span class="tag">Style Guides</span>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-num">03</div>
+                <div class="service-icon"><i class="fa-solid fa-chart-line"></i></div>
+                <div class="service-name">Product Marketing</div>
+                <p class="service-desc">
+                    Strategy-first marketing that bridges your product and your market. We write positioning, build go-to-market playbooks, design pitch decks, and craft campaigns that drive qualified demand.
+                </p>
+                <div class="service-tags">
+                    <span class="tag">GTM Strategy</span>
+                    <span class="tag">Positioning</span>
+                    <span class="tag">Pitch Decks</span>
+                    <span class="tag">Campaign Creative</span>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-num">04</div>
+                <div class="service-icon"><i class="fa-solid fa-microchip"></i></div>
+                <div class="service-name">AI-Powered Solutions</div>
+                <p class="service-desc">
+                    We design and deploy custom AI workflows that eliminate bottlenecks, automate the mundane, and surface insight where it matters. From LLM integrations to agentic pipelines — purpose-built for your business.
+                </p>
+                <div class="service-tags">
+                    <span class="tag">LLM Integration</span>
+                    <span class="tag">Workflow Automation</span>
+                    <span class="tag">AI Products</span>
+                    <span class="tag">Prompt Engineering</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ─── PORTFOLIO ─── -->
+    <section id="portfolio">
+        <div class="portfolio-header reveal">
+            <div>
+                <div class="section-label">Selected Work</div>
+                <h2 class="portfolio-title">Things We've Built</h2>
+            </div>
+            <div class="portfolio-filters">
+                <button class="filter-btn active" onclick="filterWork(this, 'all')">All</button>
+                <button class="filter-btn" onclick="filterWork(this, 'web')">Web</button>
+                <button class="filter-btn" onclick="filterWork(this, 'brand')">Brand</button>
+                <button class="filter-btn" onclick="filterWork(this, 'ai')">AI</button>
+            </div>
+        </div>
+
+        <div class="portfolio-grid reveal" id="portfolio-grid">
+
+            <!-- 
+                TO ADD YOUR OWN IMAGES:
+                Replace the src="YOUR_IMAGE_URL" on each <img> tag.
+                You can also change the overlay-cat and overlay-title text.
+                Add more .portfolio-item blocks as needed.
+            -->
+
+            <div class="portfolio-item pi-1" data-cat="web" onclick="openLightbox(this)">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80" alt="Web project">
+                <div class="portfolio-overlay">
+                    <div class="overlay-cat">Web Design</div>
+                    <div class="overlay-title">SaaS Dashboard — Full-stack UI</div>
+                </div>
+            </div>
+
+            <div class="portfolio-item pi-2" data-cat="brand" onclick="openLightbox(this)">
+                <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80" alt="Brand project">
+                <div class="portfolio-overlay">
+                    <div class="overlay-cat">Brand Identity</div>
+                    <div class="overlay-title">Logo System & Mark</div>
+                </div>
+            </div>
+
+            <div class="portfolio-item pi-3" data-cat="ai" onclick="openLightbox(this)">
+                <img src="https://images.unsplash.com/photo-1677756119517-756a188d2d94?w=600&q=80" alt="AI project">
+                <div class="portfolio-overlay">
+                    <div class="overlay-cat">AI Solution</div>
+                    <div class="overlay-title">Agentic Data Pipeline</div>
+                </div>
+            </div>
+
+            <div class="portfolio-item pi-4" data-cat="web" onclick="openLightbox(this)">
+                <img src="https://images.unsplash.com/photo-1587440871875-191322ee64b0?w=600&q=80" alt="Design project">
+                <div class="portfolio-overlay">
+                    <div class="overlay-cat">Web Design</div>
+                    <div class="overlay-title">Landing Page — Conversion Optimized</div>
+                </div>
+            </div>
+
+            <div class="portfolio-item pi-5" data-cat="brand" onclick="openLightbox(this)">
+                <img src="https://images.unsplash.com/photo-1634942537034-2531766767d1?w=500&q=80" alt="Brand project">
+                <div class="portfolio-overlay">
+                    <div class="overlay-cat">Brand Design</div>
+                    <div class="overlay-title">Brand System & Style Guide</div>
+                </div>
+            </div>
+
+            <div class="portfolio-item pi-6" data-cat="web" onclick="openLightbox(this)">
+                <img src="https://images.unsplash.com/photo-1547119957-637f8679db1e?w=700&q=80" alt="Design project">
+                <div class="portfolio-overlay">
+                    <div class="overlay-cat">Product Marketing</div>
+                    <div class="overlay-title">Pitch Deck — Series A</div>
+                </div>
+            </div>
+
+            <div class="portfolio-item pi-7" data-cat="ai" onclick="openLightbox(this)">
+                <img src="https://images.unsplash.com/photo-1612945196808-e8c63a4e7a89?w=400&q=80" alt="AI project">
+                <div class="portfolio-overlay">
+                    <div class="overlay-cat">AI Solution</div>
+                    <div class="overlay-title">Custom LLM Workflow</div>
+                </div>
+            </div>
+
+            <div class="portfolio-item pi-8" data-cat="brand" onclick="openLightbox(this)">
+                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Brand project">
+                <div class="portfolio-overlay">
+                    <div class="overlay-cat">Brand & Web</div>
+                    <div class="overlay-title">Full Brand + Website Launch</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ─── PROCESS ─── -->
+    <section id="process">
+        <div class="process-inner">
+            <div class="reveal">
+                <div class="section-label">How We Work</div>
+                <h2 class="process-intro-title">Simple Process.<br>Exceptional Output.</h2>
+                <p class="process-intro-desc">
+                    We don't do bloated agency workflows. Every engagement is tight, transparent, and oriented around delivering real results — fast.
                 </p>
             </div>
-        </div>
 
-        <!-- CENTER COLUMN (3D PC WIREFRAME) -->
-        <div class="col-center">
-            <div id="canvas-container"></div>
-        </div>
-
-        <!-- RIGHT COLUMN -->
-        <div class="col-right">
-            
-            <div class="action-bar">
-                <a href="mailto:schuyler@hampledesignhouse.com" class="btn-contact">Inquire</a>
-                <a href="#" class="btn-icon cs-trigger"><i class="fa-regular fa-user"></i></a>
-                <a href="#" class="btn-icon cs-trigger"><i class="fa-solid fa-bars-staggered"></i></a>
-            </div>
-
-            <div class="cards-container">
-                <div class="mini-card">
-                    <div class="wireframe-gyro">
-                        <div class="gyro-ring"></div>
-                        <div class="gyro-ring"></div>
-                        <div class="gyro-ring"></div>
-                    </div>
-                    <div class="card-content">
-                        <span class="card-text">Structural Integrity</span>
-                        <a href="#" class="card-btn cs-trigger"><i class="fa-solid fa-arrow-up-right"></i></a>
+            <div class="process-steps reveal">
+                <div class="process-step">
+                    <div class="step-num">01</div>
+                    <div class="step-content">
+                        <div class="step-name">Discovery & Alignment</div>
+                        <p class="step-desc">We start by understanding your market, your users, and your goals — then align on scope, timeline, and measurable outcomes before a single pixel is designed.</p>
                     </div>
                 </div>
-
-                <div class="mini-card">
-                    <div class="nested-cubes">
-                        <div class="nested-box"></div>
-                        <div class="inner-box"></div>
+                <div class="process-step">
+                    <div class="step-num">02</div>
+                    <div class="step-content">
+                        <div class="step-name">Strategy & Architecture</div>
+                        <p class="step-desc">Whether it's information architecture, brand positioning, or an AI integration plan — we map the system before we build it. No surprises mid-project.</p>
                     </div>
-                    <div class="card-content">
-                        <span class="card-text">Digital Blueprints</span>
-                        <a href="#" class="card-btn cs-trigger"><i class="fa-solid fa-arrow-up-right"></i></a>
+                </div>
+                <div class="process-step">
+                    <div class="step-num">03</div>
+                    <div class="step-content">
+                        <div class="step-name">Design & Build</div>
+                        <p class="step-desc">Execution at speed. We work in rapid cycles with frequent check-ins, delivering polished work at every stage — not just at the end.</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-num">04</div>
+                    <div class="step-content">
+                        <div class="step-name">Launch & Optimize</div>
+                        <p class="step-desc">Shipping is the beginning, not the end. We analyze performance post-launch and iterate to compound results over time.</p>
                     </div>
                 </div>
             </div>
-
-            <div class="social-links">
-                <a href="#" class="cs-trigger"><i class="fa-brands fa-linkedin-in"></i></a>
-                <a href="#" class="cs-trigger"><i class="fa-brands fa-youtube"></i></a>
-                <a href="#" class="cs-trigger"><i class="fa-solid fa-code-branch"></i></a>
-                <a href="#" class="cs-trigger"><i class="fa-brands fa-x-twitter"></i></a>
-            </div>
-
         </div>
-    </main>
+    </section>
 
-    <!-- COMING SOON OVERLAY -->
-    <div id="coming-soon-overlay">
-        <button class="btn-close-cs" id="close-cs">Return</button>
-        <div class="cs-content">
-            <h2 class="cs-title">Coming Soon</h2>
-            <p class="cs-desc">This sector is currently under construction.</p>
-            <div id="cs-canvas-container"></div>
+    <!-- ─── CTA ─── -->
+    <section id="cta">
+        <div class="cta-label section-label">Let's Build Something</div>
+        <h2 class="cta-title">
+            Ready to Make
+            <span class="line2">Something Exceptional?</span>
+        </h2>
+        <p class="cta-desc">
+            Whether you're launching a new product, rethinking your brand, or exploring what AI can do for your business — we're the partner you want in your corner.
+        </p>
+        <div class="cta-actions">
+            <a href="mailto:schuyler@hampledesignhouse.com" class="btn-large primary">
+                Start a Conversation &nbsp;<i class="fa-solid fa-arrow-up-right"></i>
+            </a>
+            <a href="#portfolio" class="btn-large outline">
+                View Our Work
+            </a>
         </div>
+    </section>
+
+    <!-- ─── FOOTER ─── -->
+    <footer>
+        <a href="#hero" class="footer-logo">HAMPLE DESIGN HOUSE</a>
+        <p class="footer-copy">© 2025 Hample Design House. All rights reserved.</p>
+        <div class="footer-social">
+            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-youtube"></i></a>
+            <a href="#"><i class="fa-solid fa-code-branch"></i></a>
+        </div>
+    </footer>
+
+    <!-- LIGHTBOX -->
+    <div id="lightbox" onclick="closeLightbox()">
+        <button class="lb-close"><i class="fa-solid fa-xmark"></i></button>
+        <img id="lightbox-img" src="" alt="">
     </div>
 
-    <!-- Interactive 3D Script -->
     <script>
-        window.onload = function () {
-            
-            // --- UI Interaction Logic ---
-            const overlay = document.getElementById('coming-soon-overlay');
-            const closeBtn = document.getElementById('close-cs');
-            const triggers = document.querySelectorAll('.cs-trigger');
+    // ─── 3D PC SCENE ───
+    window.addEventListener('DOMContentLoaded', () => {
+        const container = document.getElementById('canvas-container');
+        if (!container) return;
 
-            // Open overlay on clicking any link with 'cs-trigger'
-            triggers.forEach(trigger => {
-                trigger.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    overlay.classList.add('visible');
-                });
-            });
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(42, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.set(0, 5, 38);
 
-            // Close overlay
-            closeBtn.addEventListener('click', () => {
-                overlay.classList.remove('visible');
-            });
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
 
-            // --- 3D Scene Generator ---
-            // Wrapped in a function so we can spawn multiple PCs easily!
-            function createPCScene(containerId, cameraZ) {
-                const container = document.getElementById(containerId);
-                if (!container) return;
-                
-                // 1. Setup Scene, Camera, and Renderer
-                const scene = new THREE.Scene();
-                
-                const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-                camera.position.set(0, 5, cameraZ); 
+        const pcGroup = new THREE.Group();
 
-                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-                renderer.setSize(container.clientWidth, container.clientHeight);
-                container.appendChild(renderer.domElement);
+        const mat = new THREE.LineBasicMaterial({ color: 0x3b82f6, transparent: true, opacity: 0.85 });
+        const matGlow = new THREE.LineBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.4 });
 
-                // 2. Create the PC Group
-                const pcGroup = new THREE.Group();
+        function addBox(w, h, d, x, y, z, m = mat, rx = 0) {
+            const geo = new THREE.BoxGeometry(w, h, d);
+            const edges = new THREE.EdgesGeometry(geo);
+            const line = new THREE.LineSegments(edges, m);
+            line.position.set(x, y, z);
+            line.rotation.x = rx;
+            pcGroup.add(line);
+        }
 
-                const material = new THREE.LineBasicMaterial({ 
-                    color: 0x3b82f6, 
-                    transparent: true, 
-                    opacity: 0.9 
-                });
+        // Desktop tower
+        addBox(10, 2.5, 10,  0, -3, 0);
+        addBox(2.5, 0.3, 0.3, 3, -2.5, 5);
+        addBox(2.5, 0.3, 0.3, 3, -3.2, 5);
+        // Monitor neck
+        addBox(3, 1.5, 3, 0, -1, 0);
+        // Monitor body + inner glow frame
+        addBox(8, 6.5, 4, 0, 3, 1);
+        addBox(6, 4.5, 0.1, 0, 3, 2.9, matGlow); // screen glow
+        addBox(5, 4.5, 5, 0, 3, -3.5);
+        // Keyboard
+        addBox(9, 0.4, 4, 0, -5, 7, mat, Math.PI / 12);
 
-                function addWireframeBox(w, h, d, x, y, z, rotX = 0) {
-                    const geometry = new THREE.BoxGeometry(w, h, d);
-                    const edges = new THREE.EdgesGeometry(geometry);
-                    const line = new THREE.LineSegments(edges, material);
-                    line.position.set(x, y, z);
-                    line.rotation.x = rotX;
-                    pcGroup.add(line);
-                }
-            
-                // Desktop Base
-                addWireframeBox(10, 2.5, 10, 0, -3, 0);
-                // Floppy drives
-                addWireframeBox(2.5, 0.3, 0.3, 3, -2.5, 5);
-                addWireframeBox(2.5, 0.3, 0.3, 3, -3.2, 5);
-                // Monitor Base/Neck
-                addWireframeBox(3, 1.5, 3, 0, -1, 0);
-                // CRT Monitor (Front Bezel)
-                addWireframeBox(8, 6.5, 4, 0, 3, 1);
-                // CRT Monitor (Back Tube)
-                addWireframeBox(5, 4.5, 5, 0, 3, -3.5);
-                // Keyboard 
-                addWireframeBox(9, 0.4, 4, 0, -5, 7, Math.PI / 12);
+        scene.add(pcGroup);
+        pcGroup.rotation.y = -Math.PI / 4;
 
-                scene.add(pcGroup);
-                pcGroup.rotation.y = -Math.PI / 4; 
+        let isDragging = false;
+        let prev = { x: 0, y: 0 };
 
-                // 3. Mouse Interaction
-                let isDragging = false;
-                let previousMousePosition = { x: 0, y: 0 };
+        container.addEventListener('mousedown', e => { isDragging = true; prev = { x: e.clientX, y: e.clientY }; });
+        window.addEventListener('mouseup', () => { isDragging = false; });
+        container.addEventListener('mousemove', e => {
+            if (!isDragging) return;
+            pcGroup.rotation.y += (e.clientX - prev.x) * 0.01;
+            pcGroup.rotation.x += (e.clientY - prev.y) * 0.01;
+            prev = { x: e.clientX, y: e.clientY };
+        });
 
-                container.addEventListener('mousedown', (e) => { isDragging = true; });
-                document.addEventListener('mouseup', (e) => { isDragging = false; });
-                
-                container.addEventListener('mousemove', (e) => {
-                    if (isDragging) {
-                        const deltaMove = {
-                            x: e.offsetX - previousMousePosition.x,
-                            y: e.offsetY - previousMousePosition.y
-                        };
-                        pcGroup.rotation.y += deltaMove.x * 0.01;
-                        pcGroup.rotation.x += deltaMove.y * 0.01;
-                    }
-                    previousMousePosition = { x: e.offsetX, y: e.offsetY };
-                });
+        // touch support
+        container.addEventListener('touchstart', e => { isDragging = true; prev = { x: e.touches[0].clientX, y: e.touches[0].clientY }; });
+        window.addEventListener('touchend', () => { isDragging = false; });
+        container.addEventListener('touchmove', e => {
+            if (!isDragging) return;
+            pcGroup.rotation.y += (e.touches[0].clientX - prev.x) * 0.012;
+            pcGroup.rotation.x += (e.touches[0].clientY - prev.y) * 0.012;
+            prev = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        });
 
-                // 4. Animation Loop
-                function animate() {
-                    requestAnimationFrame(animate);
-                    if (!isDragging) {
-                        pcGroup.rotation.y += 0.003;
-                        pcGroup.position.y = Math.sin(Date.now() * 0.001) * 0.4;
-                    }
-                    renderer.render(scene, camera);
-                }
+        window.addEventListener('resize', () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
 
-                // 5. Handle Resize
-                window.addEventListener('resize', () => {
-                    camera.aspect = container.clientWidth / container.clientHeight;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(container.clientWidth, container.clientHeight);
-                });
-
-                animate();
+        function animate() {
+            requestAnimationFrame(animate);
+            if (!isDragging) {
+                pcGroup.rotation.y += 0.003;
+                pcGroup.position.y = Math.sin(Date.now() * 0.001) * 0.4;
             }
+            renderer.render(scene, camera);
+        }
+        animate();
+    });
 
-            // Initialize both the main display and the smaller "Coming Soon" display.
-            // Pushing the camera back to 60 makes the second PC appear smaller!
-            createPCScene('canvas-container', 38);
-            createPCScene('cs-canvas-container', 60); 
-        };
+    // ─── FILTER ───
+    function filterWork(btn, cat) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.portfolio-item').forEach(item => {
+            const match = cat === 'all' || item.dataset.cat === cat;
+            item.style.opacity = match ? '1' : '0.2';
+            item.style.pointerEvents = match ? 'auto' : 'none';
+        });
+    }
+
+    // ─── LIGHTBOX ───
+    function openLightbox(item) {
+        const img = item.querySelector('img');
+        if (!img) return;
+        document.getElementById('lightbox-img').src = img.src;
+        document.getElementById('lightbox').classList.add('open');
+    }
+
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('open');
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+    // ─── NAV HIGHLIGHT ───
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(a => {
+                    a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+                });
+            }
+        });
+    }, { threshold: 0.4 });
+
+    sections.forEach(s => observer.observe(s));
+
+    // ─── SCROLL REVEAL ───
+    const revealObserver = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                revealObserver.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
     </script>
 </body>
 </html>

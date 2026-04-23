@@ -1038,43 +1038,191 @@
 
         .footer-social a:hover { color: var(--text-hi); }
 
-        /* ─── LIGHTBOX ─── */
-        #lightbox {
+        /* ─── PORTFOLIO COMING SOON BLOCK ─── */
+        .coming-soon-block {
+            position: relative;
+            border-radius: 24px;
+            border: 1px solid rgba(59,130,246,0.12);
+            background: var(--bg-card);
+            overflow: hidden;
+            min-height: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* animated dot-grid background */
+        .cs-grid-bg {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            gap: 0;
+            pointer-events: none;
+        }
+
+        .cs-grid-line {
+            flex: 1;
+            border-right: 1px solid rgba(59,130,246,0.06);
+            animation: cs-pulse 3s ease-in-out infinite;
+            animation-delay: calc(var(--i) * 0.4s);
+        }
+
+        @keyframes cs-pulse {
+            0%,100% { border-color: rgba(59,130,246,0.04); }
+            50%      { border-color: rgba(59,130,246,0.14); }
+        }
+
+        /* radial glow centre */
+        .coming-soon-block::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%,-50%);
+            width: 500px; height: 300px;
+            background: radial-gradient(ellipse, rgba(59,130,246,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .cs-inner {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.4rem;
+            padding: 4rem 2rem;
+        }
+
+        .cs-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(59,130,246,0.1);
+            border: 1px solid rgba(59,130,246,0.25);
+            border-radius: 100px;
+            padding: 0.4rem 1rem;
+            font-family: var(--font-ui);
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--blue);
+            letter-spacing: 0.5px;
+        }
+
+        .cs-badge-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--blue);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        .cs-heading {
+            font-family: var(--font-head);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.15;
+            color: var(--text-hi);
+        }
+
+        .cs-heading span {
+            color: var(--blue);
+        }
+
+        .cs-subtext {
+            font-size: 0.85rem;
+            color: var(--text-mid);
+            max-width: 38ch;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        /* ─── COMING SOON MODAL ─── */
+        #cs-modal {
             position: fixed;
             inset: 0;
-            background: rgba(8,13,20,0.95);
-            z-index: 2000;
+            z-index: 3000;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s;
-            backdrop-filter: blur(10px);
+            transition: opacity 0.35s ease;
         }
 
-        #lightbox.open {
+        #cs-modal.open {
             opacity: 1;
             pointer-events: auto;
         }
 
-        #lightbox img {
-            max-width: 85vw;
-            max-height: 85vh;
-            object-fit: contain;
-            border-radius: 12px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+        .cs-modal-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(8,13,20,0.92);
+            backdrop-filter: blur(16px);
         }
 
-        .lb-close {
-            position: absolute;
-            top: 2rem; right: 2rem;
+        .cs-modal-card {
+            position: relative;
+            z-index: 2;
             background: var(--bg-card);
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(59,130,246,0.18);
+            border-radius: 28px;
+            width: min(520px, 90vw);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2.5rem 2rem 2rem;
+            gap: 1rem;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(59,130,246,0.08);
+            transform: translateY(20px) scale(0.97);
+            transition: transform 0.35s ease;
+        }
+
+        #cs-modal.open .cs-modal-card {
+            transform: translateY(0) scale(1);
+        }
+
+        .cs-modal-label {
+            font-family: var(--font-head);
+            font-size: 0.55rem;
+            letter-spacing: 4px;
+            color: var(--blue);
+            text-transform: uppercase;
+        }
+
+        .cs-modal-title {
+            font-family: var(--font-head);
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-align: center;
+        }
+
+        .cs-modal-desc {
+            font-size: 0.78rem;
             color: var(--text-mid);
-            width: 44px; height: 44px;
+            text-align: center;
+            line-height: 1.7;
+            max-width: 30ch;
+            font-weight: 300;
+        }
+
+        #cs-modal-canvas {
+            width: 260px;
+            height: 260px;
+            flex-shrink: 0;
+        }
+
+        .cs-modal-close {
+            position: absolute;
+            top: 1.2rem; right: 1.2rem;
+            background: var(--bg-pill);
+            border: 1px solid rgba(255,255,255,0.07);
+            color: var(--text-mid);
+            width: 36px; height: 36px;
             border-radius: 50%;
-            font-size: 1rem;
+            font-size: 0.85rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -1082,7 +1230,10 @@
             transition: all 0.2s;
         }
 
-        .lb-close:hover { border-color: var(--blue); color: var(--blue); }
+        .cs-modal-close:hover {
+            border-color: var(--blue);
+            color: var(--blue);
+        }
 
         /* ─── FADE-IN ANIMATION ─── */
         .reveal {
@@ -1330,77 +1481,27 @@
                 <div class="section-label">Selected Work</div>
                 <h2 class="portfolio-title">Things We've Built</h2>
             </div>
-            <a href="https://www.behance.net/schuy" target="_blank" rel="noopener" class="btn-ghost" style="align-self:flex-end;">
-                View on Behance &nbsp;<i class="fa-solid fa-arrow-up-right" style="font-size:0.65rem;"></i>
-            </a>
         </div>
 
-        <div class="portfolio-grid reveal" id="portfolio-grid">
-
-            <div class="portfolio-item pi-1" onclick="openLightbox(this)">
-                <img src="https://mir-s3-cdn-cf.behance.net/projects/max_808/e35b43196764629.Y3JvcCwxMDAzLDc4NSwxMiwyMDY.jpg" alt="Myth +++">
-                <div class="portfolio-overlay">
-                    <div class="overlay-cat">Graphic Design</div>
-                    <div class="overlay-title">Myth +++</div>
-                </div>
+        <div class="coming-soon-block reveal">
+            <div class="cs-grid-bg">
+                <div class="cs-grid-line" style="--i:0"></div>
+                <div class="cs-grid-line" style="--i:1"></div>
+                <div class="cs-grid-line" style="--i:2"></div>
+                <div class="cs-grid-line" style="--i:3"></div>
+                <div class="cs-grid-line" style="--i:4"></div>
             </div>
-
-            <div class="portfolio-item pi-2" onclick="openLightbox(this)">
-                <img src="https://mir-s3-cdn-cf.behance.net/projects/max_808/bbfee2160038437.Y3JvcCw4NDgsNjYzLDAsODM0.jpg" alt="Psychedelic Surfing">
-                <div class="portfolio-overlay">
-                    <div class="overlay-cat">Illustration</div>
-                    <div class="overlay-title">Psychedelic Surfing</div>
+            <div class="cs-inner">
+                <div class="cs-badge">
+                    <span class="cs-badge-dot"></span>
+                    Under Construction
                 </div>
+                <h3 class="cs-heading">Portfolio<br><span>Coming Soon</span></h3>
+                <p class="cs-subtext">We're curating our best work right now. Check back shortly — great things are being assembled.</p>
+                <a href="mailto:schuyler@hampledesignhouse.com" class="btn-large primary" style="display:inline-flex;align-items:center;gap:0.5rem;">
+                    See Work via Email &nbsp;<i class="fa-solid fa-arrow-up-right"></i>
+                </a>
             </div>
-
-            <div class="portfolio-item pi-3" onclick="openLightbox(this)">
-                <img src="https://mir-s3-cdn-cf.behance.net/projects/max_808/4c3bfb144475541.Y3JvcCwxNDAwLDEwOTUsMCw2MzA.jpg" alt="The Highpieces [i]">
-                <div class="portfolio-overlay">
-                    <div class="overlay-cat">Digital Art</div>
-                    <div class="overlay-title">The Highpieces [i]</div>
-                </div>
-            </div>
-
-            <div class="portfolio-item pi-4" onclick="openLightbox(this)">
-                <img src="https://mir-s3-cdn-cf.behance.net/projects/max_808/19e093137497431.Y3JvcCwxMDgwLDg0NCwwLDA.png" alt="Gunna Poster">
-                <div class="portfolio-overlay">
-                    <div class="overlay-cat">Poster Design</div>
-                    <div class="overlay-title">Gunna Poster</div>
-                </div>
-            </div>
-
-            <div class="portfolio-item pi-5" onclick="openLightbox(this)">
-                <img src="https://mir-s3-cdn-cf.behance.net/projects/max_808/ab7518137021287.Y3JvcCwxNzQ1LDEzNjUsMCww.jpg" alt="Bocas Del Toro, Panama">
-                <div class="portfolio-overlay">
-                    <div class="overlay-cat">Photography</div>
-                    <div class="overlay-title">Bocas Del Toro, Panama</div>
-                </div>
-            </div>
-
-            <div class="portfolio-item pi-6" onclick="openLightbox(this)">
-                <img src="https://mir-s3-cdn-cf.behance.net/projects/max_808/f77f36161226481.Y3JvcCwzMDM0LDIzNzMsMjI1LDM4Mw.png" alt="SCHUYWALKER">
-                <div class="portfolio-overlay">
-                    <div class="overlay-cat">Digital Art</div>
-                    <div class="overlay-title">SCHUYWALKER</div>
-                </div>
-            </div>
-
-            <div class="portfolio-item pi-7" onclick="openLightbox(this)">
-                <img src="https://mir-s3-cdn-cf.behance.net/projects/max_808/0884ef137458249.Y3JvcCwxMDgwLDg0NCwwLDA.jpg" alt="EDC x Adobe 2020">
-                <div class="portfolio-overlay">
-                    <div class="overlay-cat">Brand Collab</div>
-                    <div class="overlay-title">EDC x Adobe 2020</div>
-                </div>
-            </div>
-
-            <div class="portfolio-item pi-8" onclick="openLightbox(this)">
-                <img src="https://mir-s3-cdn-cf.behance.net/projects/max_808/e4c6a2162448335.Y3JvcCw3NTQsNTg5LDEwNCwyNzA.jpg" alt="Thought Glitch Animation">
-                <div class="portfolio-overlay">
-                    <div class="overlay-cat">Motion & Animation</div>
-                    <div class="overlay-title">Thought Glitch Animation</div>
-                </div>
-            </div>
-
         </div>
     </section>
 
@@ -1473,29 +1574,42 @@
         <a href="#hero" class="footer-logo">HAMPLE DESIGN HOUSE</a>
         <p class="footer-copy">© 2025 Hample Design House. All rights reserved.</p>
         <div class="footer-social">
-            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
-            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="#"><i class="fa-brands fa-youtube"></i></a>
-            <a href="#"><i class="fa-solid fa-code-branch"></i></a>
-        </div>
+                <a href="#" class="cs-dead"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#" class="cs-dead"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#" class="cs-dead"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#" class="cs-dead"><i class="fa-solid fa-code-branch"></i></a>
+            </div>
     </footer>
 
-    <!-- LIGHTBOX -->
-    <div id="lightbox" onclick="closeLightbox()">
-        <button class="lb-close"><i class="fa-solid fa-xmark"></i></button>
-        <img id="lightbox-img" src="" alt="">
+    <!-- COMING SOON MODAL -->
+    <div id="cs-modal" role="dialog" aria-modal="true" aria-label="Coming Soon">
+        <div class="cs-modal-backdrop" onclick="closeCSModal()"></div>
+        <div class="cs-modal-card">
+            <button class="cs-modal-close" onclick="closeCSModal()" aria-label="Close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="cs-modal-label">Sector Under Construction</div>
+            <div class="cs-modal-title">Coming Soon</div>
+            <div id="cs-modal-canvas"></div>
+            <p class="cs-modal-desc">This part of the site is still being built. In the meantime, reach out directly.</p>
+            <a href="mailto:schuyler@hampledesignhouse.com" class="btn-primary" style="font-size:0.75rem;">
+                Get in Touch
+            </a>
+        </div>
     </div>
 
     <script>
-    // ─── 3D PC SCENE ───
-    window.addEventListener('DOMContentLoaded', () => {
-        const container = document.getElementById('canvas-container');
-        if (!container) return;
+    // ═══════════════════════════════════
+    // SHARED PC BUILDER — reused for both
+    // the hero canvas AND the modal canvas
+    // ═══════════════════════════════════
+    function buildPCScene(containerId, cameraZ, interactive) {
+        const container = document.getElementById(containerId);
+        if (!container) return null;
 
-        const scene = new THREE.Scene();
-        // Camera looks at the vertical midpoint of the model (~y=0.5)
-        const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 1000);
-        camera.position.set(0, 0.5, 38);
+        const scene    = new THREE.Scene();
+        const camera   = new THREE.PerspectiveCamera(42, 1, 0.1, 1000);
+        camera.position.set(0, 0.5, cameraZ);
         camera.lookAt(0, 0.5, 0);
 
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -1503,57 +1617,39 @@
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         container.appendChild(renderer.domElement);
 
-        // On touch devices, let scroll events pass through the canvas element
-        if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
-            renderer.domElement.style.pointerEvents = 'none';
-        }
-
-        const pcGroup = new THREE.Group();
-
-        const mat = new THREE.LineBasicMaterial({ color: 0x3b82f6, transparent: true, opacity: 0.85 });
+        const mat     = new THREE.LineBasicMaterial({ color: 0x3b82f6, transparent: true, opacity: 0.85 });
         const matGlow = new THREE.LineBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.4 });
 
         function addBox(w, h, d, x, y, z, m = mat, rx = 0) {
-            const geo = new THREE.BoxGeometry(w, h, d);
+            const geo   = new THREE.BoxGeometry(w, h, d);
             const edges = new THREE.EdgesGeometry(geo);
-            const line = new THREE.LineSegments(edges, m);
+            const line  = new THREE.LineSegments(edges, m);
             line.position.set(x, y, z);
             line.rotation.x = rx;
             pcGroup.add(line);
         }
 
-        // Desktop tower
+        const pcGroup = new THREE.Group();
         addBox(10, 2.5, 10,  0, -3, 0);
         addBox(2.5, 0.3, 0.3, 3, -2.5, 5);
         addBox(2.5, 0.3, 0.3, 3, -3.2, 5);
-        // Monitor neck
         addBox(3, 1.5, 3, 0, -1, 0);
-        // Monitor body + inner glow frame
         addBox(8, 6.5, 4, 0, 3, 1);
-        addBox(6, 4.5, 0.1, 0, 3, 2.9, matGlow); // screen glow
+        addBox(6, 4.5, 0.1, 0, 3, 2.9, matGlow);
         addBox(5, 4.5, 5, 0, 3, -3.5);
-        // Keyboard
         addBox(9, 0.4, 4, 0, -5, 7, mat, Math.PI / 12);
-
         scene.add(pcGroup);
-        // Offset the group so the model's vertical center (≈+0.5) lands at world origin,
-        // which is where the camera is looking. Net result: perfectly centered.
         pcGroup.position.y = -0.5;
         pcGroup.rotation.y = -Math.PI / 4;
 
         let isDragging = false;
         let prev = { x: 0, y: 0 };
 
-        // ── Detect touch/mobile: matchMedia pointer:coarse covers phones & tablets ──
         const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
-        if (!isTouchDevice) {
-            // ── Desktop only: mouse drag interaction ──
+        if (interactive && !isTouchDevice) {
             container.style.cursor = 'move';
-            container.addEventListener('mousedown', e => {
-                isDragging = true;
-                prev = { x: e.clientX, y: e.clientY };
-            });
+            container.addEventListener('mousedown', e => { isDragging = true; prev = { x: e.clientX, y: e.clientY }; });
             window.addEventListener('mouseup', () => { isDragging = false; });
             container.addEventListener('mousemove', e => {
                 if (!isDragging) return;
@@ -1562,10 +1658,12 @@
                 prev = { x: e.clientX, y: e.clientY };
             });
         }
-        // ── Mobile: no touch listeners at all → scroll passes through freely ──
+
+        if (!interactive || isTouchDevice) {
+            renderer.domElement.style.pointerEvents = 'none';
+        }
 
         window.addEventListener('resize', () => {
-            // Canvas is always square, so aspect ratio is always 1
             camera.aspect = 1;
             camera.updateProjectionMatrix();
             renderer.setSize(container.clientWidth, container.clientHeight);
@@ -1575,55 +1673,79 @@
             requestAnimationFrame(animate);
             if (!isDragging) {
                 pcGroup.rotation.y += 0.003;
-                // Float around the centered baseline (-0.5 offset)
                 pcGroup.position.y = -0.5 + Math.sin(Date.now() * 0.001) * 0.4;
             }
             renderer.render(scene, camera);
         }
         animate();
+
+        return { renderer, pcGroup };
+    }
+
+    // ═══════════════════════════════════
+    // INIT HERO SCENE on page load
+    // ═══════════════════════════════════
+    window.addEventListener('DOMContentLoaded', () => {
+        buildPCScene('canvas-container', 38, true);
+
+        // ─── NAV HIGHLIGHT ───
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-links a');
+        const navObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(a => {
+                        a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+                    });
+                }
+            });
+        }, { threshold: 0.4 });
+        sections.forEach(s => navObserver.observe(s));
+
+        // ─── SCROLL REVEAL ───
+        const revealObserver = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    revealObserver.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // ─── WIRE ALL DEAD LINKS ───
+        document.querySelectorAll('a.cs-dead, a[href="#"]').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                openCSModal();
+            });
+        });
     });
 
-    // ─── LIGHTBOX ───
-    function openLightbox(item) {
-        const img = item.querySelector('img');
-        if (!img) return;
-        document.getElementById('lightbox-img').src = img.src;
-        document.getElementById('lightbox').classList.add('open');
+    // ═══════════════════════════════════
+    // COMING SOON MODAL
+    // ═══════════════════════════════════
+    let modalSceneBuilt = false;
+
+    function openCSModal() {
+        document.getElementById('cs-modal').classList.add('open');
+        document.body.style.overflow = 'hidden';
+        // Build the mini 3D scene once, on first open
+        if (!modalSceneBuilt) {
+            modalSceneBuilt = true;
+            // Small delay so the modal is visible before Three.js measures the container
+            setTimeout(() => buildPCScene('cs-modal-canvas', 38, false), 50);
+        }
     }
 
-    function closeLightbox() {
-        document.getElementById('lightbox').classList.remove('open');
+    function closeCSModal() {
+        document.getElementById('cs-modal').classList.remove('open');
+        document.body.style.overflow = '';
     }
 
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
-
-    // ─── NAV HIGHLIGHT ───
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-links a');
-
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                navLinks.forEach(a => {
-                    a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
-                });
-            }
-        });
-    }, { threshold: 0.4 });
-
-    sections.forEach(s => observer.observe(s));
-
-    // ─── SCROLL REVEAL ───
-    const revealObserver = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-            if (e.isIntersecting) {
-                e.target.classList.add('visible');
-                revealObserver.unobserve(e.target);
-            }
-        });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeCSModal();
+    });
     </script>
 </body>
 </html>

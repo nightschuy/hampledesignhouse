@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1200px; height:630px; overflow:hidden; }
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: #F2F0EA;
+    color: #111317;
+    position: relative;
+  }
+  .grain {
+    position:absolute; inset:0; opacity:0.04; mix-blend-mode:multiply; pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .glow {
+    position:absolute; width:760px; height:760px; right:-180px; top:-200px;
+    background: radial-gradient(circle, rgba(36,56,255,0.14), transparent 62%);
+    border-radius:50%;
+  }
+  .frame { position:absolute; inset:40px; border:1px solid rgba(17,19,23,0.14); border-radius:26px; }
+  .pad { position:absolute; inset:40px; padding:70px 80px; display:flex; flex-direction:column; justify-content:space-between; }
+  .top { display:flex; justify-content:space-between; align-items:center; }
+  .logo { font-weight:700; font-size:30px; letter-spacing:-0.02em; }
+  .logo .d { color:#2438FF; }
+  .loc { font-weight:700; font-size:15px; letter-spacing:0.18em; text-transform:uppercase; color:#5C5F69; }
+  h1 { font-weight:700; font-size:96px; line-height:0.96; letter-spacing:-0.04em; }
+  h1 .a { color:#2438FF; }
+  h1 .g { color:#9B9DA4; }
+  .bottom { display:flex; justify-content:space-between; align-items:flex-end; }
+  .tags { display:flex; gap:14px; }
+  .tag { font-weight:700; font-size:16px; letter-spacing:0.04em; text-transform:uppercase; color:#5C5F69; border:1px solid rgba(17,19,23,0.14); border-radius:100px; padding:9px 18px; }
+  .url { font-weight:700; font-size:18px; letter-spacing:0.04em; color:#111317; }
+  /* wireframe orb motif */
+  .orb { position:absolute; right:90px; top:170px; width:300px; height:300px; }
+  .orb svg { width:100%; height:100%; }
+</style>
+</head>
+<body>
+  <div class="glow"></div>
+  <div class="frame"></div>
+  <div class="orb">
+    <svg viewBox="-160 -160 320 320" fill="none">
+      <g stroke="#111317" stroke-width="1" opacity="0.55">
+        <circle r="150"/>
+        <ellipse rx="150" ry="58"/>
+        <ellipse rx="150" ry="110"/>
+        <ellipse rx="58" ry="150"/>
+        <ellipse rx="110" ry="150"/>
+        <ellipse rx="150" ry="58" transform="rotate(45)"/>
+        <ellipse rx="150" ry="58" transform="rotate(-45)"/>
+      </g>
+      <g stroke="#2438FF" stroke-width="1.4" opacity="0.85">
+        <ellipse rx="150" ry="90" transform="rotate(20)"/>
+        <ellipse rx="90" ry="150" transform="rotate(20)"/>
+      </g>
+    </svg>
+  </div>
+  <div class="grain"></div>
+  <div class="pad">
+    <div class="top">
+      <div class="logo">HAMPLE DESIGN HOUSE<span class="d">.</span></div>
+      <div class="loc">Fort Lauderdale × Miami</div>
+    </div>
+    <h1>Web &amp; brand<br>design that ships<br>at the <span class="a">speed of AI.</span></h1>
+    <div class="bottom">
+      <div class="tags">
+        <div class="tag">Web Design</div>
+        <div class="tag">Brand Identity</div>
+        <div class="tag">AI-Accelerated</div>
+      </div>
+      <div class="url">hampledesignhouse.com</div>
+    </div>
+  </div>
+</body>
+</html>

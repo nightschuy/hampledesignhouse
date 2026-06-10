@@ -201,6 +201,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 
+    <!-- ═══════════════════════════════════════════
+         GOOGLE ANALYTICS (GA4)
+    ═══════════════════════════════════════════ -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WMPZ5W3LMJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-WMPZ5W3LMJ');
+    </script>
+
     <style>
         :root {
             --bone:     #F2F0EA;
@@ -627,6 +638,37 @@
         }
         .footer-links a:hover { color: var(--accent); }
 
+        /* ─── CONTACT ─── */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+        .contact-intro .cta-sub { margin: 1.4rem 0 0; }
+        .contact-direct { margin-top: 2rem; display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.9rem; }
+        .contact-direct a { color: var(--accent); font-weight: 600; width: fit-content; border-bottom: 1px solid currentColor; }
+        .contact-direct span { color: var(--ink-2); }
+        .contact-form {
+            background: var(--card); border: 1px solid var(--line); border-radius: var(--r-card);
+            padding: 2.2rem; display: flex; flex-direction: column; gap: 1.1rem; position: relative;
+        }
+        .field { display: flex; flex-direction: column; gap: 0.45rem; }
+        .field label {
+            font-family: var(--font-display); font-weight: 700; font-size: 0.7rem;
+            letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2);
+        }
+        .field input, .field select, .field textarea {
+            font-family: var(--font-body); font-size: 0.95rem; color: var(--ink);
+            background: var(--bone); border: 1px solid var(--line); border-radius: 12px;
+            padding: 0.85rem 1rem; width: 100%; transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .field textarea { resize: vertical; min-height: 110px; }
+        .field input:focus, .field select:focus, .field textarea:focus {
+            outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(36,56,255,0.12);
+        }
+        .field input::placeholder, .field textarea::placeholder { color: var(--ink-3); }
+        .hp { position: absolute; left: -9999px; opacity: 0; height: 0; width: 0; }
+        .form-status { font-size: 0.85rem; min-height: 1.2em; color: var(--ink-2); }
+        .form-status.ok  { color: #1f9d55; }
+        .form-status.err { color: #d23b2f; }
+        .contact-form.sending button[type="submit"] { opacity: 0.55; pointer-events: none; }
+
         /* ─── REVEAL ─── */
         .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s cubic-bezier(.2,.8,.2,1), transform 0.8s cubic-bezier(.2,.8,.2,1); }
         .reveal.in { opacity: 1; transform: none; }
@@ -638,6 +680,7 @@
             .approach-grid { grid-template-columns: 1fr; gap: 2.5rem; }
             .band-grid { grid-template-columns: 1fr 1fr; }
             .band-lead { grid-column: 1 / -1; }
+            .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
         }
         @media (max-width: 720px) {
             .wrap, .nav-inner { padding: 0 1.4rem; }
@@ -668,8 +711,9 @@
                 <a href="#approach" data-scroll>Approach</a>
                 <a href="#work" data-scroll>Work</a>
                 <a href="#faq" data-scroll>FAQ</a>
+                <a href="#contact" data-scroll>Contact</a>
             </div>
-            <a href="mailto:schuyler@hampledesignhouse.com" class="nav-cta">Start a Project</a>
+            <a href="#contact" class="nav-cta" data-scroll>Start a Project</a>
         </div>
     </nav>
 
@@ -690,7 +734,7 @@
                         by a human, delivered in days, not months.
                     </p>
                     <div class="hero-actions reveal">
-                        <a href="mailto:schuyler@hampledesignhouse.com" class="btn btn-fill">Start a Project <span class="arr">↗</span></a>
+                        <a href="#contact" class="btn btn-fill" data-scroll>Start a Project <span class="arr">↗</span></a>
                         <a href="#services" class="btn btn-line" data-scroll>What I Do</a>
                     </div>
                     <div class="hero-meta reveal">
@@ -855,16 +899,47 @@
         </div>
     </section>
 
-    <!-- CTA -->
-    <section id="cta" class="block">
-        <div class="wrap">
-            <div class="eyebrow reveal" style="justify-content:center;">Let's build something</div>
-            <h2 class="cta-title display reveal" style="margin-top:1.4rem;">Make it look<br><span class="accent">expensive.</span></h2>
-            <p class="cta-sub reveal">Launching something new, rethinking your brand, or finally fixing that site you're embarrassed by — let's talk.</p>
-            <div class="cta-actions reveal">
-                <a href="mailto:schuyler@hampledesignhouse.com" class="btn btn-fill">Start a Conversation <span class="arr">↗</span></a>
-                <a href="#work" class="btn btn-line" data-scroll>See the Work</a>
+    <!-- CONTACT -->
+    <section id="contact" class="block">
+        <div class="wrap contact-grid">
+            <div class="contact-intro reveal">
+                <div class="eyebrow">Let's build something</div>
+                <h2 class="cta-title display" style="margin-top:1.4rem;">Make it look<br><span class="accent">expensive.</span></h2>
+                <p class="cta-sub">Launching something new, rethinking your brand, or finally fixing the site you're embarrassed by — tell me about it. Replies usually land within a day.</p>
+                <div class="contact-direct">
+                    <a href="mailto:schuyler@hampledesignhouse.com">schuyler@hampledesignhouse.com</a>
+                    <span>Fort Lauderdale, FL · serving Miami &amp; South Florida</span>
+                </div>
             </div>
+            <form id="contact-form" class="contact-form reveal" action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="9c039ab8-93ee-4fdc-bb51-77741a3005b9">
+                <input type="hidden" name="subject" value="New project inquiry — hampledesignhouse.com">
+                <input type="hidden" name="from_name" value="Hample Design House">
+                <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+                <div class="field">
+                    <label for="cf-name">Name</label>
+                    <input id="cf-name" type="text" name="name" required placeholder="Your name">
+                </div>
+                <div class="field">
+                    <label for="cf-email">Email</label>
+                    <input id="cf-email" type="email" name="email" required placeholder="you@company.com">
+                </div>
+                <div class="field">
+                    <label for="cf-type">What do you need?</label>
+                    <select id="cf-type" name="project_type">
+                        <option>Website design &amp; development</option>
+                        <option>Brand &amp; graphic design</option>
+                        <option>Both — web + brand</option>
+                        <option>Something else</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="cf-msg">Project details</label>
+                    <textarea id="cf-msg" name="message" rows="4" required placeholder="A sentence or two about what you're building, your timeline, and budget if you have one."></textarea>
+                </div>
+                <button type="submit" class="btn btn-fill" style="width:100%;justify-content:center;">Send it <span class="arr">↗</span></button>
+                <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+            </form>
         </div>
     </section>
 
@@ -1064,7 +1139,7 @@
             }
         });
     }, { threshold: 0.45 });
-    ['services', 'approach', 'work', 'faq'].forEach(id => { const s = document.getElementById(id); if (s) activeObs.observe(s); });
+    ['services', 'approach', 'work', 'faq', 'contact'].forEach(id => { const s = document.getElementById(id); if (s) activeObs.observe(s); });
 
     // ═══════════════════════════════════════════
     //  FAQ ACCORDION
@@ -1078,6 +1153,42 @@
             if (!open) { item.classList.add('open'); a.style.maxHeight = a.scrollHeight + 'px'; }
         });
     });
+
+    // ═══════════════════════════════════════════
+    //  CONTACT FORM — Web3Forms (AJAX, no redirect)
+    // ═══════════════════════════════════════════
+    const cform = document.getElementById('contact-form');
+    if (cform) {
+        const status = document.getElementById('form-status');
+        cform.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            status.className = 'form-status';
+            status.textContent = 'Sending…';
+            cform.classList.add('sending');
+            try {
+                const res = await fetch(cform.action, {
+                    method: 'POST',
+                    body: new FormData(cform),
+                    headers: { 'Accept': 'application/json' }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    status.textContent = "Got it — I'll be in touch within a day. Thanks!";
+                    status.classList.add('ok');
+                    cform.reset();
+                    if (window.gtag) gtag('event', 'generate_lead', { event_category: 'contact', event_label: 'contact_form' });
+                } else {
+                    status.textContent = (data.message || 'Something went wrong.') + ' You can also email schuyler@hampledesignhouse.com.';
+                    status.classList.add('err');
+                }
+            } catch (err) {
+                status.textContent = 'Network error — please email schuyler@hampledesignhouse.com instead.';
+                status.classList.add('err');
+            } finally {
+                cform.classList.remove('sending');
+            }
+        });
+    }
     </script>
 </body>
 </html>

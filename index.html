@@ -441,17 +441,6 @@
         }
         #canvas-container { position: absolute; inset: 0; cursor: grab; }
         #canvas-container:active { cursor: grabbing; }
-        .visual-tag {
-            position: absolute; bottom: 0.25rem; left: 50%; transform: translateX(-50%);
-            font-family: var(--font-display); font-weight: 700;
-            font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
-            color: var(--ink-3); display: flex; align-items: center; gap: 0.45rem;
-            white-space: nowrap;
-        }
-        .visual-tag::before {
-            content: ''; width: 5px; height: 5px; border-radius: 50%;
-            background: var(--accent); animation: blink 2s infinite;
-        }
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
         /* ─── MARQUEE ─── */
@@ -748,7 +737,6 @@
                 </div>
                 <div class="hero-visual reveal">
                     <div id="canvas-container"></div>
-                    <div class="visual-tag">Drag to rotate · realtime WebGL</div>
                 </div>
             </div>
         </div>
@@ -1094,8 +1082,6 @@
         } catch (err) {
             // WebGL unavailable — degrade gracefully, keep the rest of the page alive
             console.warn('WebGL visual disabled:', err && err.message);
-            const tag = document.querySelector('.visual-tag');
-            if (tag) tag.style.display = 'none';
         }
     })();
 

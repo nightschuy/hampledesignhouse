@@ -387,7 +387,7 @@
         }
         .hero-grid {
             display: grid;
-            grid-template-columns: 1.15fr 0.85fr;
+            grid-template-columns: 1.1fr 0.9fr;
             gap: 3rem; align-items: center; width: 100%;
         }
         .hero-eyebrow { margin-bottom: 2rem; }
@@ -440,10 +440,11 @@
         #canvas-container { position: absolute; inset: 0; cursor: grab; }
         #canvas-container:active { cursor: grabbing; }
         .visual-tag {
-            position: absolute; bottom: 0.5rem; left: 0.5rem;
+            position: absolute; bottom: 0.25rem; left: 50%; transform: translateX(-50%);
             font-family: var(--font-display); font-weight: 700;
             font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
             color: var(--ink-3); display: flex; align-items: center; gap: 0.45rem;
+            white-space: nowrap;
         }
         .visual-tag::before {
             content: ''; width: 5px; height: 5px; border-radius: 50%;
@@ -970,7 +971,7 @@
         try {
         const scene  = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
-        camera.position.set(0, 0, 5.2);
+        camera.position.set(0, 0, 4.8);
 
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));

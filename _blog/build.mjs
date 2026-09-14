@@ -44,6 +44,7 @@ const PUBLISHER = {
     '@id': `${SITE}/#organization`,
     name: 'Hample Design House',
     url: `${SITE}/`,
+    sameAs: ['https://www.instagram.com/hamplehouse/', 'https://www.behance.net/schuy', 'https://schuy.xyz'],
     logo: { '@type': 'ImageObject', url: `${SITE}/apple-touch-icon.png`, width: 180, height: 180 },
 };
 
@@ -231,6 +232,7 @@ const footer = () => `
                 <a href="/blog/">Blog</a>
                 <a href="/blog/rss.xml">RSS</a>
                 <a href="mailto:${EMAIL}">Email</a>
+                <a href="https://www.instagram.com/hamplehouse/" target="_blank" rel="noopener">Instagram</a>
                 <a href="https://www.behance.net/schuy" target="_blank" rel="noopener">Behance</a>
                 <a href="https://schuy.xyz" target="_blank" rel="noopener">Schuy.xyz</a>
             </div>

@@ -197,6 +197,8 @@
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://unpkg.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Concept-build card names only: subset to the glyphs they use, so three extra faces cost a few KB -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Geist:wght@600&family=Inter+Tight:wght@500&text=EmberOakDriftlnFod%20%26&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 
@@ -561,32 +563,112 @@
         .band-lead { max-width: 30ch; }
         .band-lead p { color: rgba(242,240,234,0.65); margin-top: 1rem; font-size: 0.95rem; line-height: 1.7; }
 
-        /* ─── PORTFOLIO COMING SOON ─── */
-        .cs-block {
-            position: relative; border: 1px solid var(--line);
-            border-radius: var(--r-card); background: var(--paper);
-            overflow: hidden; min-height: 460px;
-            display: flex; align-items: center; justify-content: center; text-align: center;
+        /* ─── WORK: CONCEPT BUILDS ───
+           Each card rests in the house style (white card, ink type) and
+           re-skins into its own site's palette + typeface on hover, focus,
+           or, on touch screens, while it sits mid-viewport (.is-live).
+           The --x-* tokens hold each concept's theme; --bg/--hi/--dim/--rule
+           are what the card actually paints with, so swapping them is the
+           whole theme change and the color transitions come for free. */
+        .builds { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .builds > .reveal { display: flex; }
+        .build {
+            --bg: var(--card); --bg-2: var(--bone); --hi: var(--ink); --dim: var(--ink-2);
+            --rule: var(--line); --pop: var(--accent);
+            flex: 1; display: flex; flex-direction: column;
+            background: var(--bg); color: var(--hi);
+            border: 1px solid var(--rule); border-radius: var(--r-card);
+            overflow: hidden;
+            transition: transform 0.5s cubic-bezier(.2,.8,.2,1), box-shadow 0.5s, background-color 0.5s, color 0.5s, border-color 0.5s;
         }
-        .cs-grid-bg { position: absolute; inset: 0; display: flex; pointer-events: none; }
-        .cs-grid-bg span {
-            flex: 1; border-right: 1px solid var(--line-2);
-            animation: cs-pulse 3.4s ease-in-out infinite;
-            animation-delay: calc(var(--i) * 0.35s);
+        .build[data-theme="ember"] {
+            --x-bg: #12100D; --x-bg-2: #1A1712; --x-hi: #ECE4D6; --x-dim: #B3A893;
+            --x-rule: rgba(236,228,214,0.14); --x-pop: #D97B3F;
+            --x-font: 'Cormorant Garamond', Georgia, serif;
         }
-        @keyframes cs-pulse { 0%,100%{ border-color: var(--line-2);} 50%{ border-color: rgba(36,56,255,0.18);} }
-        .cs-inner { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 1.4rem; padding: 4rem 2rem; }
-        .cs-badge {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            border: 1px solid var(--line); border-radius: var(--r-pill);
-            padding: 0.45rem 1.05rem; background: var(--card);
+        .build[data-theme="driftline"] {
+            --x-bg: #000000; --x-bg-2: #0D0D12; --x-hi: #FAFAFA; --x-dim: #9CA3AF;
+            --x-rule: rgba(255,255,255,0.12); --x-pop: #B48CDE;
+            --x-font: 'Geist', 'Helvetica Neue', Arial, sans-serif;
+        }
+        .build[data-theme="field"] {
+            --x-bg: #F6F5F2; --x-bg-2: #E4E2DB; --x-hi: #121212; --x-dim: #5F5E5A;
+            --x-rule: rgba(18,18,18,0.14); --x-pop: #121212;
+            --x-font: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif;
+        }
+        .build:hover, .build:focus-visible, .build.is-live {
+            --bg: var(--x-bg); --bg-2: var(--x-bg-2); --hi: var(--x-hi); --dim: var(--x-dim);
+            --rule: var(--x-rule); --pop: var(--x-pop);
+            transform: translateY(-6px);
+            box-shadow: 0 30px 60px rgba(17,19,23,0.16);
+        }
+        .build:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+        .build-frame {
+            background: var(--bg-2); padding: 0.7rem 0.7rem 0;
+            border-bottom: 1px solid var(--rule);
+            transition: background-color 0.5s, border-color 0.5s;
+        }
+        .build-bar { display: flex; align-items: center; gap: 0.35rem; padding: 0 0.2rem 0.6rem; }
+        .build-bar i { width: 7px; height: 7px; border-radius: 50%; background: var(--rule); transition: background-color 0.5s; }
+        .build-url {
+            margin-left: auto; margin-right: auto; transform: translateX(-12px);
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            font-size: 0.64rem; letter-spacing: 0.02em; color: var(--dim);
+            transition: color 0.5s;
+        }
+        .build-url::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #1f9d55; animation: blink 2.4s infinite; }
+        .build-shot { aspect-ratio: 4 / 3; overflow: hidden; border-radius: 10px 10px 0 0; background: var(--bg); }
+        .build-shot img {
+            width: 100%; height: 100%; object-fit: cover; object-position: top center;
+            transition: transform 0.9s cubic-bezier(.2,.8,.2,1);
+        }
+        .build:hover .build-shot img, .build.is-live .build-shot img { transform: scale(1.04); }
+
+        .build-body { flex: 1; display: flex; flex-direction: column; gap: 0.9rem; padding: 1.6rem 1.7rem 1.5rem; }
+        .build-meta {
+            display: flex; justify-content: space-between; gap: 1rem;
+            font-family: var(--font-display); font-weight: 700; font-size: 0.66rem;
+            letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim);
+            transition: color 0.5s;
+        }
+        .build-meta b { color: var(--pop); font-weight: 700; transition: color 0.5s; }
+        /* The name is always set in the concept's own face: the theme hint at rest. */
+        .build-name { font-family: var(--x-font); font-weight: 600; font-size: 1.75rem; letter-spacing: -0.03em; line-height: 1.05; }
+        .build[data-theme="ember"] .build-name { font-weight: 500; font-size: 2.05rem; letter-spacing: 0; }
+        .build[data-theme="field"] .build-name { font-weight: 500; letter-spacing: -0.045em; }
+        .build-desc { color: var(--dim); font-size: 0.9rem; line-height: 1.7; transition: color 0.5s; }
+        .build-spec {
+            display: flex; align-items: center; gap: 0.8rem;
+            font-size: 0.72rem; color: var(--dim); transition: color 0.5s;
+        }
+        .build-chips { display: inline-flex; }
+        .build-chips i {
+            width: 16px; height: 16px; border-radius: 50%; background: var(--c);
+            border: 1px solid var(--rule); margin-right: -4px;
+            transition: border-color 0.5s;
+        }
+        .build-chips i:last-child { margin-right: 0; }
+        .build-foot {
+            margin-top: auto; padding-top: 1.1rem; border-top: 1px solid var(--rule);
+            display: flex; justify-content: space-between; align-items: center; gap: 1rem;
             font-family: var(--font-display); font-weight: 700; font-size: 0.68rem;
-            letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2);
+            letter-spacing: 0.06em; text-transform: uppercase;
+            transition: border-color 0.5s;
         }
-        .cs-badge::before { content:''; width:6px; height:6px; border-radius:50%; background: var(--accent); animation: blink 2s infinite; }
-        .cs-heading { font-size: clamp(2.4rem, 6vw, 4.5rem); }
-        .cs-heading .accent { color: var(--accent); }
-        .cs-sub { color: var(--ink-2); max-width: 42ch; line-height: 1.7; font-size: 0.95rem; }
+        .build-go {
+            flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%;
+            display: grid; place-items: center; font-size: 0.95rem;
+            border: 1px solid var(--rule); color: var(--hi);
+            transition: background-color 0.4s, color 0.4s, border-color 0.4s, transform 0.4s;
+        }
+        .build:hover .build-go, .build:focus-visible .build-go, .build.is-live .build-go {
+            background: var(--pop); border-color: var(--pop); color: var(--bg); transform: rotate(45deg);
+        }
+        .builds-foot {
+            margin-top: 2.2rem; display: flex; justify-content: space-between; align-items: center;
+            gap: 1.2rem; flex-wrap: wrap; color: var(--ink-2); font-size: 0.92rem;
+        }
 
         /* ─── FAQ ─── */
         #faq { background: var(--paper); }
@@ -672,6 +754,10 @@
             .band-grid { grid-template-columns: 1fr 1fr; }
             .band-lead { grid-column: 1 / -1; }
             .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .builds { grid-template-columns: 1fr; }
+            .build { display: grid; grid-template-columns: 1.05fr 1fr; }
+            .build-frame { display: flex; flex-direction: column; border-bottom: none; border-right: 1px solid var(--rule); padding-bottom: 0.7rem; }
+            .build-shot { flex: 1; border-radius: 10px; aspect-ratio: auto; min-height: 260px; }
         }
         @media (max-width: 720px) {
             .wrap, .nav-inner { padding: 0 1.4rem; }
@@ -689,6 +775,11 @@
             .field input, .field select, .field textarea { font-size: 16px; }
             .footer-inner { flex-direction: column; align-items: flex-start; gap: 1.4rem; }
             .marquee-track { gap: 1.6rem; }
+            .build { display: flex; }
+            .build-frame { display: block; border-right: none; border-bottom: 1px solid var(--rule); padding-bottom: 0; }
+            .build-shot { border-radius: 10px 10px 0 0; aspect-ratio: 4 / 3; min-height: 0; }
+            .build-body { padding: 1.4rem 1.3rem 1.3rem; }
+            .builds-foot { flex-direction: column; align-items: flex-start; }
         }
         @media (max-width: 480px) {
             .wrap, .nav-inner { padding: 0 1.1rem; }
@@ -705,7 +796,7 @@
             .hero-actions { gap: 0.7rem; }
             section.block { padding: 4rem 0; }
             .svc-name { font-size: 1.3rem; }
-            .cta-title, .cs-heading { font-size: 2.3rem; }
+            .cta-title { font-size: 2.3rem; }
             .sec-title { font-size: 1.8rem; }
             .footer-links { flex-wrap: wrap; gap: 1rem 1.4rem; }
         }
@@ -714,6 +805,8 @@
         @media (prefers-reduced-motion: reduce) {
             .reveal { opacity: 1; transform: none; transition: none; }
             .marquee-track { animation: none; }
+            .build, .build-shot img, .build-go { transform: none !important; }
+            .build-url::before { animation: none; }
             * { scroll-behavior: auto !important; }
         }
     </style>
@@ -871,19 +964,83 @@
     <section id="work" class="block">
         <div class="wrap">
             <div class="sec-head">
-                <h2 class="sec-title display reveal">Selected work.</h2>
-                <p class="sec-note reveal">Curating the strongest pieces right now. Want to see the full portfolio today? It's one email away.</p>
+                <h2 class="sec-title display reveal">Sites, built<br>from scratch.</h2>
+                <p class="sec-note reveal">Three concept builds, each designed and hand-coded for a different kind of business. No templates, no page builders. Every one is live, so click through.</p>
             </div>
-            <div class="cs-block reveal">
-                <div class="cs-grid-bg">
-                    <span style="--i:0"></span><span style="--i:1"></span><span style="--i:2"></span><span style="--i:3"></span><span style="--i:4"></span>
+            <div class="builds">
+                <div class="reveal">
+                    <a href="concepts/ember-and-oak/" class="build" data-theme="ember" data-concept="ember-and-oak">
+                        <div class="build-frame" aria-hidden="true">
+                            <div class="build-bar"><i></i><i></i><i></i><span class="build-url">emberandoak.com</span></div>
+                            <div class="build-shot">
+                                <picture>
+                                    <source type="image/avif" srcset="concepts/previews/ember-and-oak-800.avif 800w, concepts/previews/ember-and-oak-1440.avif 1440w" sizes="(max-width: 720px) 92vw, (max-width: 1000px) 46vw, 400px">
+                                    <img src="concepts/previews/ember-and-oak-800.jpg" alt="" width="800" height="556" loading="lazy" decoding="async">
+                                </picture>
+                            </div>
+                        </div>
+                        <div class="build-body">
+                            <div class="build-meta"><span><b>01</b> &nbsp;Restaurant</span><span>HTML · CSS</span></div>
+                            <h3 class="build-name">Ember &amp; Oak</h3>
+                            <p class="build-desc">A wood-fired dining room. Dark and editorial, with every path leading to the reservation.</p>
+                            <div class="build-spec">
+                                <span class="build-chips" aria-hidden="true"><i style="--c:#12100D"></i><i style="--c:#ECE4D6"></i><i style="--c:#D97B3F"></i></span>
+                                <span>Cormorant Garamond · Inter</span>
+                            </div>
+                            <div class="build-foot"><span>Restaurants, bars &amp; hospitality</span><span class="build-go" aria-hidden="true">↗</span></div>
+                        </div>
+                    </a>
                 </div>
-                <div class="cs-inner">
-                    <div class="cs-badge">Portfolio in progress</div>
-                    <h3 class="cs-heading display">Coming<br><span class="accent">soon.</span></h3>
-                    <p class="cs-sub">The case studies are being assembled. In the meantime, I'm happy to share work directly.</p>
-                    <a href="mailto:schuyler@hampledesignhouse.com" class="btn btn-fill">Request the Portfolio <span class="arr">↗</span></a>
+                <div class="reveal" style="transition-delay:0.1s">
+                    <a href="concepts/driftline/" class="build" data-theme="driftline" data-concept="driftline">
+                        <div class="build-frame" aria-hidden="true">
+                            <div class="build-bar"><i></i><i></i><i></i><span class="build-url">driftline.io</span></div>
+                            <div class="build-shot">
+                                <picture>
+                                    <source type="image/avif" srcset="concepts/previews/driftline-800.avif 800w, concepts/previews/driftline-1440.avif 1440w" sizes="(max-width: 720px) 92vw, (max-width: 1000px) 46vw, 400px">
+                                    <img src="concepts/previews/driftline-800.jpg" alt="" width="800" height="556" loading="lazy" decoding="async">
+                                </picture>
+                            </div>
+                        </div>
+                        <div class="build-body">
+                            <div class="build-meta"><span><b>02</b> &nbsp;SaaS Product</span><span>React · Tailwind</span></div>
+                            <h3 class="build-name">Driftline</h3>
+                            <p class="build-desc">A software launch page with bento features, a mock product UI, and pricing built to convert.</p>
+                            <div class="build-spec">
+                                <span class="build-chips" aria-hidden="true"><i style="--c:#000000"></i><i style="--c:#FAFAFA"></i><i style="--c:#B48CDE"></i></span>
+                                <span>Geist · Geist Mono</span>
+                            </div>
+                            <div class="build-foot"><span>Startups &amp; software products</span><span class="build-go" aria-hidden="true">↗</span></div>
+                        </div>
+                    </a>
                 </div>
+                <div class="reveal" style="transition-delay:0.2s">
+                    <a href="concepts/form-and-field/" class="build" data-theme="field" data-concept="form-and-field">
+                        <div class="build-frame" aria-hidden="true">
+                            <div class="build-bar"><i></i><i></i><i></i><span class="build-url">formandfield.studio</span></div>
+                            <div class="build-shot">
+                                <picture>
+                                    <source type="image/avif" srcset="concepts/previews/form-and-field-800.avif 800w, concepts/previews/form-and-field-1440.avif 1440w" sizes="(max-width: 720px) 92vw, (max-width: 1000px) 46vw, 400px">
+                                    <img src="concepts/previews/form-and-field-800.jpg" alt="" width="800" height="556" loading="lazy" decoding="async">
+                                </picture>
+                            </div>
+                        </div>
+                        <div class="build-body">
+                            <div class="build-meta"><span><b>03</b> &nbsp;Architecture</span><span>HTML · CSS</span></div>
+                            <h3 class="build-name">Form &amp; Field</h3>
+                            <p class="build-desc">An architecture and interiors studio. Quiet palette, big type, and a filterable project gallery.</p>
+                            <div class="build-spec">
+                                <span class="build-chips" aria-hidden="true"><i style="--c:#F6F5F2"></i><i style="--c:#121212"></i><i style="--c:#E2C298"></i></span>
+                                <span>Inter Tight · IBM Plex Mono</span>
+                            </div>
+                            <div class="build-foot"><span>Studios, agencies &amp; portfolios</span><span class="build-go" aria-hidden="true">↗</span></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="builds-foot reveal">
+                <p>Client case studies and brand identity work are shared on request.</p>
+                <a href="mailto:schuyler@hampledesignhouse.com" class="btn btn-line">Request the Portfolio <span class="arr">↗</span></a>
             </div>
         </div>
     </section>
@@ -1154,6 +1311,22 @@
         });
     }, { threshold: 0.45 });
     ['services', 'approach', 'work', 'faq', 'contact'].forEach(id => { const s = document.getElementById(id); if (s) activeObs.observe(s); });
+
+    // ═══════════════════════════════════════════
+    //  WORK: CONCEPT BUILD CARDS
+    //  Touch screens have no hover, so a card re-skins into its own
+    //  theme while it crosses the middle of the viewport instead.
+    // ═══════════════════════════════════════════
+    const builds = document.querySelectorAll('.build');
+    if (window.matchMedia('(hover: none)').matches) {
+        const liveObs = new IntersectionObserver((entries) => {
+            entries.forEach(e => e.target.classList.toggle('is-live', e.isIntersecting));
+        }, { rootMargin: '-42% 0px -42% 0px' });
+        builds.forEach(b => liveObs.observe(b));
+    }
+    builds.forEach(b => b.addEventListener('click', () => {
+        if (window.gtag) gtag('event', 'select_content', { content_type: 'concept_site', item_id: b.dataset.concept });
+    }));
 
     // ═══════════════════════════════════════════
     //  FAQ ACCORDION

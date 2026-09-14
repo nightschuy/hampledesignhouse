@@ -1,3 +1,8 @@
 # local temp render/verify artifacts
 _*.png
 _*.html
+
+# Build-time deps for the React concept sources in apps/. Only the built
+# output under concepts/ ships.
+node_modules/
+.DS_Store

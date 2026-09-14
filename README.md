@@ -6,10 +6,27 @@ Fort Lauderdale serving Miami & South Florida. Web design, development, and bran
 Live: [hampledesignhouse.com](https://hampledesignhouse.com)
 
 ## Stack
-- Single static `index.html` (no build step) — deployed via GitHub Pages
+- Single static `index.html` (no build step) — deployed via GitHub Pages; only `apps/driftline` has a build
 - [Lenis](https://github.com/darkroomengineering/lenis) for smooth scrolling
 - [Three.js](https://threejs.org/) + a custom GLSL shader for the realtime WebGL hero visual
 - Inter (Google Fonts) + Helvetica for display/wordmark
+
+## Concept builds (`#work`)
+The Work section showcases three concept sites served from `concepts/`:
+- `concepts/ember-and-oak/`, `concepts/form-and-field/`: plain static HTML, edit in place
+- `concepts/driftline/`: **build output, don't hand-edit.** Source is the Vite + React + Tailwind
+  project in `apps/driftline/` (`npm install && npm run build` there writes into `concepts/driftline/`)
+- `concepts/previews/`: card screenshots (1440×1000 captures → AVIF 800/1440 + JPEG fallback).
+  Recapture after a visual change to a concept:
+  ```sh
+  "$CHROME" --headless=new --hide-scrollbars --window-size=1440,1000 --virtual-time-budget=6000 \
+    --screenshot=/tmp/driftline.png "http://localhost:4321/concepts/driftline/"
+  sips -s format avif -s formatOptions 55 --resampleWidth 800 /tmp/driftline.png --out concepts/previews/driftline-800.avif
+  sips -s format avif -s formatOptions 55 /tmp/driftline.png --out concepts/previews/driftline-1440.avif
+  sips -s format jpeg -s formatOptions 72 --resampleWidth 800 /tmp/driftline.png --out concepts/previews/driftline-800.jpg
+  ```
+Each card's theme (palette + typeface it switches to on hover) lives in the `.build[data-theme=…]`
+tokens in `index.html`.
 
 ## Assets
 - `favicon.svg` — wordmark mark

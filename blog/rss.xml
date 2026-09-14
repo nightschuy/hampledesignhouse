@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Hample Design House: Notes</title>
+        <link>https://hampledesignhouse.com/blog/</link>
+        <description>Notes on design, AI, and shipping fast, from an AI-accelerated web and brand studio in Fort Lauderdale.</description>
+        <language>en-us</language>
+        <lastBuildDate>Mon, 14 Sep 2026 13:00:00 GMT</lastBuildDate>
+        <atom:link href="https://hampledesignhouse.com/blog/rss.xml" rel="self" type="application/rss+xml"/>
+        <item>
+            <title>AI Website Builder vs. Hiring a Designer in 2026 (There's a Third Option)</title>
+            <link>https://hampledesignhouse.com/blog/ai-website-builder-vs-designer/</link>
+            <guid isPermaLink="true">https://hampledesignhouse.com/blog/ai-website-builder-vs-designer/</guid>
+            <pubDate>Mon, 14 Sep 2026 13:00:00 GMT</pubDate>
+            <category>AI &amp; Web Design</category>
+            <description>AI builders are genuinely good now. Designers are genuinely worth it. Here's how to tell which one your business needs — and the hybrid most studios won't mention.</description>
+        </item>
+        <item>
+            <title>What Does a Website Cost in Fort Lauderdale &amp; Miami in 2026?</title>
+            <link>https://hampledesignhouse.com/blog/website-cost-fort-lauderdale-miami/</link>
+            <guid isPermaLink="true">https://hampledesignhouse.com/blog/website-cost-fort-lauderdale-miami/</guid>
+            <pubDate>Mon, 14 Sep 2026 13:00:00 GMT</pubDate>
+            <category>Pricing</category>
+            <description>Real 2026 price ranges for websites in South Florida — builder, freelancer, studio, agency — plus what actually drives the number up and what you can cut.</description>
+        </item>
+        <item>
+            <title>Your Next Customer Is Asking ChatGPT, Not Google. Here's How to Get Named.</title>
+            <link>https://hampledesignhouse.com/blog/get-cited-by-chatgpt-local-business/</link>
+            <guid isPermaLink="true">https://hampledesignhouse.com/blog/get-cited-by-chatgpt-local-business/</guid>
+            <pubDate>Mon, 14 Sep 2026 13:00:00 GMT</pubDate>
+            <category>SEO &amp; AI Search</category>
+            <description>A practical 2026 guide to AI search visibility for local businesses — what actually gets you cited by ChatGPT, Perplexity, and AI Overviews, and what's hype.</description>
+        </item>
+        <item>
+            <title>Web Design in 2027: AI Made Everything Fast, So Originality Became the Moat</title>
+            <link>https://hampledesignhouse.com/blog/web-design-trends-2027/</link>
+            <guid isPermaLink="true">https://hampledesignhouse.com/blog/web-design-trends-2027/</guid>
+            <pubDate>Mon, 14 Sep 2026 13:00:00 GMT</pubDate>
+            <category>Trends</category>
+            <description>The trends worth building for as AI-generated sites flood the web — expressive type, motion with a job, real texture, and why memorable now beats modern.</description>
+        </item>
+        <item>
+            <title>How I Design and Ship a Website in Days, Not Months</title>
+            <link>https://hampledesignhouse.com/blog/website-in-days-not-months/</link>
+            <guid isPermaLink="true">https://hampledesignhouse.com/blog/website-in-days-not-months/</guid>
+            <pubDate>Mon, 14 Sep 2026 13:00:00 GMT</pubDate>
+            <category>Process</category>
+            <description>A day-by-day look inside an AI-accelerated design process — what AI handles, what a human must never hand over, and why the old timeline was mostly waiting.</description>
+        </item>
+    </channel>
+</rss>

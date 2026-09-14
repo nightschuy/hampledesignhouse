@@ -28,6 +28,18 @@ The Work section showcases three concept sites served from `concepts/`:
 Each card's theme (palette + typeface it switches to on hover) lives in the `.build[data-theme=…]`
 tokens in `index.html`.
 
+## Blog (`/blog/`)
+Posts are markdown in `_blog/posts/NN-slug.md` (frontmatter: title, slug, description, keywords,
+category, date, excerpt, optional `updated`). The underscore folder keeps Jekyll from serving them.
+```sh
+cd _blog && npm install      # once
+node build.mjs               # writes /blog/, /blog/rss.xml, /sitemap.xml, share images
+node build.mjs --all         # local preview including future-dated posts
+```
+Posts dated after today (America/New_York) are skipped, so a scheduled post goes live on the first
+build on or after its date. Bump `updated:` when you revise a post. `blog/blog.css` and `blog/blog.js`
+are hand-written; everything else under `/blog/` is generated, so don't edit it directly.
+
 ## Assets
 - `favicon.svg` — wordmark mark
 - `og-image.png` — social share image (1200×630), generated from `og-image.html`

@@ -5,8 +5,16 @@
         <link>https://hampledesignhouse.com/blog/</link>
         <description>Notes on design, AI, and shipping fast, from an AI-accelerated web and brand studio in Fort Lauderdale.</description>
         <language>en-us</language>
-        <lastBuildDate>Mon, 14 Sep 2026 13:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 15 Sep 2026 13:00:00 GMT</lastBuildDate>
         <atom:link href="https://hampledesignhouse.com/blog/rss.xml" rel="self" type="application/rss+xml"/>
+        <item>
+            <title>One Site, Three Audiences: A Case Study on schuy.xyz</title>
+            <link>https://hampledesignhouse.com/blog/schuy-xyz-artist-portfolio-case-study/</link>
+            <guid isPermaLink="true">https://hampledesignhouse.com/blog/schuy-xyz-artist-portfolio-case-study/</guid>
+            <pubDate>Tue, 15 Sep 2026 13:00:00 GMT</pubDate>
+            <category>Case Study</category>
+            <description>How I designed my own artist portfolio to sell prints, digital goods, and commissions at once, and what it taught me about creative-business sites.</description>
+        </item>
         <item>
             <title>AI Website Builder vs. Hiring a Designer in 2026 (There's a Third Option)</title>
             <link>https://hampledesignhouse.com/blog/ai-website-builder-vs-designer/</link>

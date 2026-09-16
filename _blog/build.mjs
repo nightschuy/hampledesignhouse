@@ -30,7 +30,7 @@ const args = new Set(process.argv.slice(2));
 const TODAY = process.env.BLOG_TODAY || new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
 
 // Category pills, in the order the index shows them.
-const CATEGORIES = ['AI & Web Design', 'Pricing', 'SEO & AI Search', 'Trends', 'Process'];
+const CATEGORIES = ['AI & Web Design', 'Pricing', 'SEO & AI Search', 'Trends', 'Process', 'Case Study'];
 
 const AUTHOR = {
     '@type': 'Person',

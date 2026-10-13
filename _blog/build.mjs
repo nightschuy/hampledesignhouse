@@ -25,12 +25,15 @@ const EMAIL = 'schuyler@hampledesignhouse.com';
 const GA_ID = 'G-WMPZ5W3LMJ';
 const WPM = 225;
 const CHROME = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+// Share-image font stack. Override on Linux, where "Helvetica Neue" silently falls back to another face:
+// OG_FONT="'TeX Gyre Heros',sans-serif" node build.mjs --og
+const OG_FONT = process.env.OG_FONT || "'Helvetica Neue',Helvetica,Arial,sans-serif";
 
 const args = new Set(process.argv.slice(2));
 const TODAY = process.env.BLOG_TODAY || new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
 
 // Category pills, in the order the index shows them.
-const CATEGORIES = ['AI & Web Design', 'Pricing', 'SEO & AI Search', 'Trends', 'Process', 'Case Study'];
+const CATEGORIES = ['AI & Web Design', 'Lead Generation', 'AI for Business', 'Pricing', 'SEO & AI Search', 'Trends', 'Process', 'Case Study'];
 
 const AUTHOR = {
     '@type': 'Person',
@@ -120,6 +123,8 @@ function loadPost(file) {
     html = html
         // The label sits on its own line in the answer card, so the sentence after it needs a capital.
         .replace(/^<p><strong>Short answer:<\/strong>\s*(\S)/, (_, c) => `<p class="answer"><strong>Short answer:</strong> ${c.toUpperCase()}`)
+        // Outbound source links open in a new tab; internal links stay put.
+        .replace(/<a href="(https?:\/\/(?!hampledesignhouse\.com)[^"]+)"/g, '<a href="$1" target="_blank" rel="noopener"')
         .replace(/<table>/g, '<div class="table-wrap" tabindex="0" role="region" aria-label="Table"><table>')
         .replace(/<\/table>/g, '</table></div>');
     toc.push({ id: 'faq', label: 'FAQ' });
@@ -559,7 +564,7 @@ function ogHtml({ eyebrow, title }) {
     return `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1200px;height:630px;overflow:hidden}
-body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#F2F0EA;color:#111317;position:relative}
+body{font-family:${OG_FONT};background:#F2F0EA;color:#111317;position:relative}
 .glow{position:absolute;width:760px;height:760px;right:-260px;bottom:-380px;background:radial-gradient(circle,rgba(36,56,255,.16),transparent 62%);border-radius:50%}
 .frame{position:absolute;inset:40px;border:1px solid rgba(17,19,23,.14);border-radius:26px}
 .pad{position:absolute;inset:40px;padding:62px 76px;display:flex;flex-direction:column;justify-content:space-between}

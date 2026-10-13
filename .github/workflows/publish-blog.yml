@@ -1,0 +1,89 @@
+name: Publish blog
+
+# Rebuilds /blog/, RSS and the sitemap whenever a post lands on main (an approved
+# PR merge), and once a day so future-dated posts go live on their date.
+on:
+  push:
+    branches: [main]
+    paths: ['_blog/**']
+  schedule:
+    - cron: '5 10 * * *'   # 6:05 a.m. Eastern (EDT); 5:05 a.m. in winter
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: publish-blog
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install
+        working-directory: _blog
+        run: npm ci
+
+      - name: Build
+        working-directory: _blog
+        # No Chrome on purpose: share images are rendered when a draft is made and
+        # committed with the post, so the build only skips (and warns) if one is missing.
+        env:
+          CHROME: /nonexistent
+        run: node build.mjs
+
+      - name: Commit generated pages
+        id: commit
+        run: |
+          if git diff --quiet && [ -z "$(git ls-files --others --exclude-standard blog sitemap.xml)" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Nothing to publish."
+            exit 0
+          fi
+          git config user.name "hample-blog-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add blog sitemap.xml
+          git commit -m "Publish blog build ($(TZ=America/New_York date +%F))"
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          git diff --name-only HEAD~1 HEAD -- 'blog/*/index.html' \
+            | sed -E 's#^blog/([^/]+)/index.html$#https://hampledesignhouse.com/blog/\1/#' > urls.txt
+          echo "https://hampledesignhouse.com/blog/" >> urls.txt
+          cat urls.txt
+
+      - name: Trigger GitHub Pages build
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Pages build request skipped (Pages may build on push already)."
+
+      - name: Ping IndexNow (Bing, which feeds ChatGPT search)
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          sleep 90  # give Pages a moment to deploy before crawlers arrive
+          python3 - <<'PY'
+          import json, urllib.request
+          urls = [u.strip() for u in open('urls.txt') if u.strip()]
+          body = json.dumps({
+              "host": "hampledesignhouse.com",
+              "key": "40bbbee3817463dd1409a93ec3d1e783",
+              "keyLocation": "https://hampledesignhouse.com/40bbbee3817463dd1409a93ec3d1e783.txt",
+              "urlList": urls,
+          }).encode()
+          req = urllib.request.Request("https://api.indexnow.org/indexnow", data=body,
+                                       headers={"Content-Type": "application/json; charset=utf-8"})
+          try:
+              print("IndexNow:", urllib.request.urlopen(req, timeout=30).status, urls)
+          except Exception as e:
+              print("IndexNow ping failed (non-fatal):", e)
+          PY

@@ -40,6 +40,16 @@ Posts dated after today (America/New_York) are skipped, so a scheduled post goes
 build on or after its date. Bump `updated:` when you revise a post. `blog/blog.css` and `blog/blog.js`
 are hand-written; everything else under `/blog/` is generated, so don't edit it directly.
 
+### Weekly pipeline
+- `_blog/EDITORIAL.md`: audience, positioning, voice, format and SEO/AI-search rules every post follows.
+- `_blog/pipeline/backlog.md`: scored topic ideas plus a log of what was drafted and published. Star (`★`) an idea to force it next.
+- A weekly scheduled Claude task researches the week's news, drafts one or two posts, and opens one PR per
+  post (markdown + share image only). **Merging the PR is the approval.**
+- `.github/workflows/publish-blog.yml` rebuilds `/blog/` on every merge to main and daily at ~6 a.m. Eastern
+  (so future-dated posts go live on their date), triggers a Pages build, and pings IndexNow
+  (key file: `40bbbee3817463dd1409a93ec3d1e783.txt` at the root).
+- Share images on Linux: `CHROME=<headless chrome> OG_FONT="'TeX Gyre Heros',sans-serif" node build.mjs`.
+
 ## Assets
 - `favicon.svg` — wordmark mark
 - `og-image.png` — social share image (1200×630), generated from `og-image.html`

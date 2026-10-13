@@ -357,7 +357,7 @@ footer { border-top: 1px solid var(--line); padding: 3rem 0; }
     .post-layout { grid-template-columns: minmax(0, 1fr); gap: 0; }
     .post-layout { padding-bottom: 4rem; }
     .toc { display: none; }
-    .prose { margin: 0 auto; }
+    .prose { margin: 0 auto; width: 100%; min-width: 0; }
     .blog-head-grid { grid-template-columns: 1fr; gap: 1.4rem; }
     .cta-inner { grid-template-columns: 1fr; gap: 1.6rem; padding: 2.6rem; }
 }

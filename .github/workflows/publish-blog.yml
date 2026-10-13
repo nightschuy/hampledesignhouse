@@ -46,8 +46,15 @@ jobs:
         id: commit
         run: |
           if git diff --quiet && [ -z "$(git ls-files --others --exclude-standard blog sitemap.xml)" ]; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "Nothing to publish."
+            if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+              # Manual run: re-submit every blog URL to IndexNow.
+              grep -o 'https://hampledesignhouse.com/blog/[^<]*' sitemap.xml > urls.txt
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+              echo "skip_pages=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
             exit 0
           fi
           git config user.name "hample-blog-bot"
@@ -62,7 +69,7 @@ jobs:
           cat urls.txt
 
       - name: Trigger GitHub Pages build
-        if: steps.commit.outputs.changed == 'true'
+        if: steps.commit.outputs.changed == 'true' && steps.commit.outputs.skip_pages != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Pages build request skipped (Pages may build on push already)."

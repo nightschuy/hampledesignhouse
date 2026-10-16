@@ -285,6 +285,23 @@ nav#nav.scrolled {
 .prose tr:last-child td { border-bottom: none; }
 .prose td:first-child { font-weight: 600; color: var(--ink); }
 
+/* Phones: stack each row into a card so no column is cut off. */
+@media (max-width: 640px) {
+    .table-wrap { overflow: visible; border: 0; border-radius: 0; background: none; }
+    .prose table.stack { min-width: 0; }
+    .prose table.stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .prose table.stack, .prose table.stack tbody, .prose table.stack tr, .prose table.stack td { display: block; width: 100%; }
+    .prose table.stack tr { border: 1px solid var(--line); border-radius: 16px; background: var(--card); padding: 0.35rem 0; margin-bottom: 0.75rem; }
+    .prose table.stack tr:last-child { margin-bottom: 0; }
+    .prose table.stack td { border-bottom: 1px solid var(--line-2); padding: 0.7rem 1.1rem; }
+    .prose table.stack tr td:last-child { border-bottom: none; }
+    .prose table.stack td:first-child { font-size: 0.95rem; }
+    .prose table.stack td:not(:first-child)::before {
+        content: attr(data-label); display: block; margin-bottom: 0.3rem;
+        font-family: var(--font-display); font-weight: 700; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2);
+    }
+}
+
 .post-faq { margin-top: 3.4em; padding-top: 0.2em; }
 .post-faq h2 { margin-top: 0; }
 .faq-entry { padding: 1.5rem 0; border-top: 1px solid var(--line); }

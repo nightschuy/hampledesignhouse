@@ -125,8 +125,16 @@ function loadPost(file) {
         .replace(/^<p><strong>Short answer:<\/strong>\s*(\S)/, (_, c) => `<p class="answer"><strong>Short answer:</strong> ${c.toUpperCase()}`)
         // Outbound source links open in a new tab; internal links stay put.
         .replace(/<a href="(https?:\/\/(?!hampledesignhouse\.com)[^"]+)"/g, '<a href="$1" target="_blank" rel="noopener"')
-        .replace(/<table>/g, '<div class="table-wrap" tabindex="0" role="region" aria-label="Table"><table>')
-        .replace(/<\/table>/g, '</table></div>');
+        // On phones, tables stack into one card per row; each cell carries its column header as a label.
+        .replace(/<table>([\s\S]*?)<\/table>/g, (_, inner) => {
+            const heads = [...(inner.match(/<thead>[\s\S]*?<\/thead>/)?.[0] ?? '').matchAll(/<th[^>]*>([\s\S]*?)<\/th>/g)]
+                .map(m => stripTags(m[1]).replace(/"/g, '&quot;'));
+            const rows = inner.replace(/<tr>([\s\S]*?)<\/tr>/g, (row, cells) => {
+                let i = 0;
+                return `<tr>${cells.replace(/<td([^>]*)>/g, (__, attrs) => `<td${attrs} data-label="${heads[i++] ?? ''}">`)}</tr>`;
+            });
+            return `<div class="table-wrap" tabindex="0" role="region" aria-label="Table"><table class="stack">${rows}</table></div>`;
+        });
     toc.push({ id: 'faq', label: 'FAQ' });
 
     const words = plainMd(`${mainMd} ${faqMd}`).split(/\s+/).filter(w => /[\p{L}\p{N}]/u.test(w)).length;

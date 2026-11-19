@@ -8,9 +8,15 @@
   </url>
   <url>
     <loc>https://hampledesignhouse.com/blog/</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hampledesignhouse.com/blog/bluehost-ai-builder-small-business/</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://hampledesignhouse.com/blog/claim-business-on-chatgpt/</loc>
